@@ -92,6 +92,8 @@
             justify-content: space-between;
             align-items: center;
             font-size: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .auth-links a {
@@ -495,11 +497,6 @@
             font-size: 11px; 
             margin-left: 5px; 
         }
-        
-        .admin-panel-btn { background: #10b981; margin-top: 10px; width: 100%; }
-        .admin-db-btn { background: #f59e0b; margin-top: 8px; width: 100%; color: white; }
-        .admin-view-btn { background: #4f46e5; margin-top: 8px; width: 100%; }
-        .admin-orders-btn { background: #7c3aed; margin-top: 8px; width: 100%; color: white; }
 
         .order-card-box {
             background: #f8fafc; 
@@ -553,6 +550,20 @@
             cursor: not-allowed !important;
         }
 
+        /* Адмінська панель - видно тільки власнику */
+        .admin-panel {
+            background: #1e293b;
+            padding: 10px 5%;
+            display: none;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            border-bottom: 2px solid #f97316;
+        }
+        .admin-panel .btn {
+            margin: 0;
+        }
+
         @media (max-width: 992px) {
             .filter-grid { grid-template-columns: repeat(2, 1fr); }
             .categories-grid { grid-template-columns: repeat(2, 1fr); }
@@ -597,16 +608,19 @@
             <span class="dashboard-view" id="userDashboard" style="display: none;">
                 👤 Вітаємо, <strong id="loggedInName">Клієнт</strong>! <span id="adminTag"></span> | <a href="#" onclick="logout(); return false;" style="color: #ef4444; margin-left: 10px; font-weight: bold;">Вийти</a>
                 <br><span id="myGarageDisplay"></span>
-                
-                <button id="adminActionBtn" class="btn admin-panel-btn" style="display:none;" onclick="openModal('addProductModal')">➕ Додати нову деталь на сайт</button>
-                <button id="adminManageDbBtn" class="btn admin-db-btn" style="display:none;" onclick="openModal('manageVehiclesModal')">⚙️ Резервне додавання авто</button>
-                <button id="adminViewClientsBtn" class="btn admin-view-btn" style="display:none;" onclick="openClientsModal()">📋 Список зареєстрованих клієнтів</button>
-                <button id="adminViewOrdersBtn" class="btn admin-orders-btn" style="display:none;" onclick="openOrdersModal()">📦 Список замовлень покупців</button>
             </span>
         </div>
         <div class="cart-status" onclick="openModal('cartModal')">
             🛒 Кошик: <span id="cartCount">0</span> тов. (<span id="cartTotal">0</span> грн) 🔽
         </div>
+    </div>
+
+    <!-- Адмінська панель - видно ТІЛЬКИ після входу власника -->
+    <div id="adminPanel" class="admin-panel">
+        <button class="btn" style="background-color: #10b981;" onclick="openModal('addProductModal')">➕ Додати нову деталь на сайт</button>
+        <button class="btn" style="background-color: #f59e0b;" onclick="openModal('manageVehiclesModal')">⚙️ Резервне додавання авто</button>
+        <button class="btn" style="background-color: #4f46e5;" onclick="openClientsModal()">📋 Список зареєстрованих клієнтів</button>
+        <button class="btn" style="background-color: #7c3aed;" onclick="openOrdersModal()">📦 Список замовлень покупців</button>
     </div>
 
     <main>
@@ -957,7 +971,16 @@
         };
 
         let cart = JSON.parse(localStorage.getItem('userCart')) || [];
+        
+        // Додаємо тестового користувача, якщо база порожня
         let registeredUsers = JSON.parse(localStorage.getItem('siteUsersDb')) || [];
+        if (registeredUsers.length === 0) {
+            registeredUsers = [
+                { name: "Тест Користувач", phone: "+380000000000", email: "test@test.com", pass: "123456" }
+            ];
+            localStorage.setItem('siteUsersDb', JSON.stringify(registeredUsers));
+        }
+        
         let globalOrders = JSON.parse(localStorage.getItem('ownerOrdersDb')) || [];
 
         function toggleStockStatus(category, productId) {
@@ -1230,7 +1253,8 @@
             registeredUsers.push({ name: name, phone: phone, email: email, pass: pass });
             localStorage.setItem('siteUsersDb', JSON.stringify(registeredUsers));
             alert("Реєстрація успішна!");
-            closeModal('registerModal'); openModal('loginModal');
+            closeModal('registerModal'); 
+            openModal('loginModal');
         }
 
         function loginStandardUser() {
@@ -1242,8 +1266,11 @@
                 document.getElementById("userDashboard").style.display = 'inline';
                 document.getElementById("loggedInName").textContent = found.name;
                 document.getElementById("adminTag").innerHTML = "";
-                closeModal('loginModal'); checkGarageDisplay();
-            } else { alert("Невірний логін або пароль!"); }
+                closeModal('loginModal'); 
+                checkGarageDisplay();
+            } else { 
+                alert("Невірний логін або пароль! Спробуйте test@test.com / 123456"); 
+            }
         }
 
         function openClientsModal() {
@@ -1272,7 +1299,8 @@
             partsCatalog[cat].push({ id: Date.now(), name: name, price: parseInt(price), sku: sku, img: img, inStock: inStock });
             localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
             alert("Товар додано!");
-            closeModal('addProductModal'); selectCategory(cat);
+            closeModal('addProductModal'); 
+            selectCategory(cat);
         }
 
         function openEditProductModal(category, product) {
@@ -1444,22 +1472,26 @@
                 document.getElementById("userDashboard").style.display = 'inline';
                 document.getElementById("loggedInName").textContent = "Кирило Слинько";
                 document.getElementById("adminTag").innerHTML = `<span class="admin-badge">Власник</span>`;
-                document.getElementById("adminActionBtn").style.display = "block"; 
-                document.getElementById("adminManageDbBtn").style.display = "block"; 
-                document.getElementById("adminViewClientsBtn").style.display = "block"; 
-                document.getElementById("adminViewOrdersBtn").style.display = "block";
-                closeModal('adminModal'); selectCategory(activeCategory);
-            } else { alert("Невірні дані адміністратора!"); }
+                document.getElementById("adminPanel").style.display = "flex";
+                closeModal('adminModal'); 
+                selectCategory(activeCategory);
+            } else { 
+                alert("Невірні дані адміністратора!"); 
+            }
         }
 
         function logout() {
             isOwnerLoggedIn = false;
             document.getElementById("userDashboard").style.display = 'none';
             document.getElementById("guestLinks").style.display = 'inline';
+            document.getElementById("adminPanel").style.display = "none";
             selectCategory(activeCategory);
         }
 
-        window.onload = function() { checkGarageDisplay(); updateCartDisplay(); };
+        window.onload = function() { 
+            checkGarageDisplay(); 
+            updateCartDisplay(); 
+        };
     </script>
 </body>
 </html>
