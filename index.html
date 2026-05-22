@@ -599,7 +599,7 @@
                 <br><span id="myGarageDisplay"></span>
                 
                 <button id="adminActionBtn" class="btn admin-panel-btn" style="display:none;" onclick="openModal('addProductModal')">➕ Додати нову деталь на сайт</button>
-                <button id="adminManageDbBtn" class="btn admin-db-btn" style="display:none;" onclick="openModal('manageVehiclesModal')">⚙️ Резервне додавання авто (ГАЗ/КамАЗ)</button>
+                <button id="adminManageDbBtn" class="btn admin-db-btn" style="display:none;" onclick="openModal('manageVehiclesModal')">⚙️ Резервне додавання авто</button>
                 <button id="adminViewClientsBtn" class="btn admin-view-btn" style="display:none;" onclick="openClientsModal()">📋 Список зареєстрованих клієнтів</button>
                 <button id="adminViewOrdersBtn" class="btn admin-orders-btn" style="display:none;" onclick="openOrdersModal()">📦 Список замовлень покупців</button>
             </span>
@@ -611,7 +611,7 @@
 
     <main>
         <section class="hero-search-section">
-            <div class="section-title">🌐 ЖИВИЙ ОНЛАЙН ПІДБІР АВТО ЧЕРЕЗ API (2012–2025)</div>
+            <div class="section-title">🌐 ПІДБІР ЗАПЧАСТИН ДЛЯ ВАНТАЖІВОК ТА АВТО</div>
             
             <div class="search-by-number">
                 <label style="font-weight: 600; font-size: 15px;">🔍 Швидкий пошук за артикулом або назвою (ігнорує пробіли та дефіси):</label>
@@ -623,34 +623,25 @@
             </div>
 
             <div class="search-by-car">
-                <label style="font-weight: 600; font-size: 15px; color: var(--primary-color);">* Комплексний підбір моделі (завантаження з глобальної світової бази):</label>
+                <label style="font-weight: 600; font-size: 15px; color: var(--primary-color);">* Підбір по марці, моделі, року та двигуну:</label>
                 <div class="filter-grid">
-                    <select id="carBrand" class="filter-select" onchange="loadLiveModels()">
+                    <select id="carBrand" class="filter-select" onchange="loadModels()">
                         <option value="">1. Марка 🔽</option>
-                        <option value="audi">Audi</option>
-                        <option value="bmw">BMW</option>
-                        <option value="mercedes">Mercedes-Benz</option>
-                        <option value="volkswagen">Volkswagen</option>
-                        <option value="ford">Ford</option>
-                        <option value="renault">Renault</option>
-                        <option value="peugeot">Peugeot</option>
-                        <option value="toyota">Toyota</option>
-                        <option value="nissan">Nissan</option>
-                        <option value="volvo">Volvo Trucks / Cars</option>
-                        <option value="daf">DAF Trucks</option>
-                        <option value="man">MAN</option>
-                        <option value="scania">Scania</option>
-                        <option value="iveco">Iveco</option>
-                        <option value="gaz">ГАЗ / Газель / Соболь (Локальна база)</option>
+                        <option value="gazel">ГАЗель</option>
+                        <option value="volga">Волга</option>
+                        <option value="uaz">УАЗ</option>
+                        <option value="gaz53">ГАЗ-53</option>
+                        <option value="kamaz">КамАЗ</option>
+                        <option value="maz">МАЗ</option>
                     </select>
-                    <select id="carModel" class="filter-select" onchange="loadLiveYears()" disabled>
+                    <select id="carModel" class="filter-select" onchange="loadYears()" disabled>
                         <option value="">2. Модель 🔽</option>
                     </select>
-                    <select id="carYear" class="filter-select" onchange="loadLiveEngines()" disabled>
+                    <select id="carYear" class="filter-select" onchange="loadEngines()" disabled>
                         <option value="">3. Рік випуску 🔽</option>
                     </select>
                     <select id="carEngine" class="filter-select" disabled>
-                        <option value="">4. Комплектація / Двигун 🔽</option>
+                        <option value="">4. Двигун / Комплектація 🔽</option>
                     </select>
                 </div>
                 <div class="action-buttons-group">
@@ -792,18 +783,18 @@
     <div id="manageVehiclesModal" class="modal-overlay">
         <div class="modal-content" style="border: 2px solid #f59e0b;">
             <button class="modal-close" onclick="closeModal('manageVehiclesModal')">×</button>
-            <div class="modal-title" style="color: #d97706;">⚙️ Локальна база (ГАЗ/КамАЗ)</div>
-            <p style="font-size: 13px; margin-bottom: 10px; color:#64748b;">Тут можна вручну додати радянські вантажівки, яких немає в закордонному онлайн-API.</p>
+            <div class="modal-title" style="color: #d97706;">⚙️ Ручне додавання моделей</div>
+            <p style="font-size: 13px; margin-bottom: 10px; color:#64748b;">Тут можна вручну додати моделі для будь-якої марки.</p>
             <div class="form-field">
                 <label>Марка:</label>
-                <input type="text" id="dbNewBrandInput" placeholder="Наприклад: КамАЗ, МАЗ, ЗІЛ">
+                <input type="text" id="dbNewBrandInput" placeholder="Наприклад: ЗІЛ, КрАЗ">
             </div>
-            <div class="form-field"><label>Модель:</label><input type="text" id="dbModelInput" placeholder="Наприклад: 5490"></div>
+            <div class="form-field"><label>Модель:</label><input type="text" id="dbModelInput" placeholder="Наприклад: 130"></div>
             <div style="display:flex; gap:10px; margin-bottom:15px;">
-                <input type="number" id="dbYearStart" placeholder="Рік від (2012)" style="flex:1;">
-                <input type="number" id="dbYearEnd" placeholder="Рік до (2025)" style="flex:1;">
+                <input type="number" id="dbYearStart" placeholder="Рік від" style="flex:1;">
+                <input type="number" id="dbYearEnd" placeholder="Рік до" style="flex:1;">
             </div>
-            <div class="form-field"><label>Модифікації двигунів (через кому):</label><input type="text" id="dbEngineInput" placeholder="V8 Cummins, ЯМЗ-534"></div>
+            <div class="form-field"><label>Модифікації двигунів (через кому):</label><input type="text" id="dbEngineInput" placeholder="Дизель, Бензин"></div>
             <button class="btn" style="background-color: #f59e0b; width: 100%;" onclick="ownerSaveVehicleToDb()">Зберегти в локальну базу</button>
         </div>
     </div>
@@ -832,11 +823,65 @@
         let activeCategory = "Двигун та вихлоп";
         let lastSelectedCarInfo = null;
 
-        // Резервна локальна база для машин
-        let localCustomVehicles = JSON.parse(localStorage.getItem('customVehicleDb')) || {
-            "gaz": ["Газель 3302", "Газель Бізнес (2.8 Cummins)", "Газель Next", "Соболь 2752", "ГАЗон Next"],
-            "камаз": ["КамАЗ 5490 (Тягач)", "КамАЗ 43118", "КамАЗ 65115"]
+        // Повна база даних автомобілів: марки, моделі, роки, двигуни
+        const vehiclesDatabase = {
+            gazel: {
+                name: "ГАЗель",
+                models: {
+                    "3302": { years: [1994,2000,2005,2010,2015,2020], engines: ["ЗМЗ-402 (2.5 бензин)", "ЗМЗ-405 (2.5 інжектор)", "УМЗ-4216 (2.9 бензин)", "Cummins ISF 2.8 (дизель)", "Evotech 2.7 (газ/бензин)"] },
+                    "Бізнес": { years: [2003,2008,2013,2018], engines: ["УМЗ-4216 (2.9 бензин)", "Cummins ISF 2.8 (дизель)"] },
+                    "Next": { years: [2013,2015,2018,2020,2022,2024], engines: ["Cummins ISF 2.8 (136 к.с.)", "Cummins ISF 2.8 (149 к.с.)", "Evotech 2.7 (газ)"] },
+                    "Соболь": { years: [1998,2005,2010,2015,2020], engines: ["ЗМЗ-406 (2.3)", "УМЗ-4216 (2.9)", "Cummins ISF 2.8"] }
+                }
+            },
+            volga: {
+                name: "Волга",
+                models: {
+                    "31105": { years: [2004,2006,2008,2010], engines: ["ЗМЗ-4062 (2.3 бензин)", "Chrysler 2.4 (бензин)"] },
+                    "3110": { years: [1997,2000,2003,2005], engines: ["ЗМЗ-402 (2.5)", "ЗМЗ-406 (2.3)"] },
+                    "3102": { years: [1982,1990,2000,2008], engines: ["ЗМЗ-402 (2.5)", "ЗМЗ-406 (2.3)"] }
+                }
+            },
+            uaz: {
+                name: "УАЗ",
+                models: {
+                    "Хантер": { years: [2003,2008,2012,2016,2020,2024], engines: ["ЗМЗ-409 (2.7 бензин)", "ЗМЗ-40905 (Євро-5)"] },
+                    "Патріот": { years: [2005,2010,2015,2018,2021,2024], engines: ["ЗМЗ-409 (2.7)", "ЗМЗ-40904 (2.7 128 к.с.)", "ЗМЗ-Pro (2.7 150 к.с.)"] },
+                    "Буханка (452)": { years: [1965,1980,1995,2005,2015,2024], engines: ["ЗМЗ-409 (2.7)", "УМЗ-4218 (2.9)"] },
+                    "Пікап": { years: [2008,2012,2016,2020,2024], engines: ["ЗМЗ-409 (2.7)", "Cummins 2.8 (дизель)"] }
+                }
+            },
+            gaz53: {
+                name: "ГАЗ-53",
+                models: {
+                    "ГАЗ-53А": { years: [1965,1970,1975,1980,1985], engines: ["ЗМЗ-53 (4.25 бензин)", "ЗМЗ-66 (4.25)"] },
+                    "ГАЗ-53-12": { years: [1983,1988,1993], engines: ["ЗМЗ-53-12 (4.25 120 к.с.)", "ЗМЗ-511 (4.25 125 к.с.)"] },
+                    "ГАЗ-3307": { years: [1989,1995,2000,2005,2010], engines: ["ЗМЗ-5234 (4.67 бензин)", "ЗМЗ-513 (4.25)"] }
+                }
+            },
+            kamaz: {
+                name: "КамАЗ",
+                models: {
+                    "5490": { years: [2012,2015,2018,2020,2022,2024], engines: ["Cummins ISGe 400 (дизель)", "Cummins ISGe 450", "Paccar MX-13"] },
+                    "43118": { years: [1995,2005,2010,2015,2020], engines: ["КамАЗ-740.31 (240 к.с.)", "КамАЗ-740.622 (260 к.с.)"] },
+                    "65115": { years: [2000,2008,2015,2020,2024], engines: ["КамАЗ-740.62 (280 к.с.)", "КамАЗ-740.63 (300 к.с.)"] },
+                    "6520": { years: [2006,2012,2018,2022,2024], engines: ["КамАЗ-740.63 (400 к.с.)", "Mercedes OM 457"] },
+                    "44108": { years: [2010,2015,2020,2024], engines: ["КамАЗ-740.63 (400 к.с.)", "Cummins ISLe 450"] }
+                }
+            },
+            maz: {
+                name: "МАЗ",
+                models: {
+                    "5440": { years: [2008,2012,2015,2018,2020,2024], engines: ["MAN D2066 (400 к.с.)", "Mercedes OM 501", "Weichai WP12"] },
+                    "6317": { years: [2010,2015,2020,2024], engines: ["MAN D2066 (360 к.с.)", "ЯМЗ-6581 (400 к.с.)"] },
+                    "4370": { years: [2012,2016,2020,2024], engines: ["MAN D0836 (250 к.с.)", "ЯМЗ-536 (280 к.с.)"] },
+                    "5340": { years: [2013,2018,2022,2024], engines: ["MAN D2066 (360 к.с.)", "Weichai WP10"] },
+                    "6430": { years: [2005,2010,2015,2020], engines: ["ЯМЗ-7511 (400 к.с.)", "MAN D2676"] }
+                }
+            }
         };
+
+        let localCustomVehicles = JSON.parse(localStorage.getItem('customVehicleDb')) || {};
 
         // Каталог запчастин з полем inStock
         let partsCatalog = JSON.parse(localStorage.getItem('globalCatalog')) || {
@@ -893,7 +938,6 @@
         let registeredUsers = JSON.parse(localStorage.getItem('siteUsersDb')) || [];
         let globalOrders = JSON.parse(localStorage.getItem('ownerOrdersDb')) || [];
 
-        // Функція перемикання статусу наявності
         function toggleStockStatus(category, productId) {
             if(!isOwnerLoggedIn) return;
             const product = partsCatalog[category].find(p => p.id === productId);
@@ -907,73 +951,69 @@
             }
         }
 
-        async function loadLiveModels() {
+        function loadModels() {
             const brand = document.getElementById("carBrand").value;
             const modelSelect = document.getElementById("carModel");
-            
-            modelSelect.innerHTML = '<option value="">Синхронізація з базою API... 🔄</option>';
-            modelSelect.disabled = true;
-
-            if (!brand) {
-                modelSelect.innerHTML = '<option value="">2. Модель 🔽</option>';
-                return;
-            }
-
-            if (brand === "gaz" || localCustomVehicles[brand.toLowerCase()]) {
-                fillLocalFallbackModels(brand, modelSelect);
-                return;
-            }
-
-            try {
-                let response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${brand}?format=json`);
-                let data = await response.json();
-                modelSelect.innerHTML = '<option value="">2. Оберіть Модель 🔽</option>';
-                
-                if (data.Results && data.Results.length > 0) {
-                    data.Results.slice(0, 120).forEach(item => {
-                        let opt = document.createElement("option");
-                        opt.value = item.Model_Name;
-                        opt.textContent = item.Model_Name;
-                        modelSelect.appendChild(opt);
-                    });
-                    modelSelect.disabled = false;
-                } else {
-                    fillLocalFallbackModels(brand, modelSelect);
-                }
-            } catch (err) {
-                fillLocalFallbackModels(brand, modelSelect);
-            }
-        }
-
-        function fillLocalFallbackModels(brand, select) {
-            select.innerHTML = '<option value="">2. Оберіть Модель 🔽</option>';
-            let list = localCustomVehicles[brand.toLowerCase()] || ["Газель Бізнес", "Газель NEXT", "Соболь", "Тягач Евро-6"];
-            list.forEach(m => {
-                let opt = document.createElement("option"); opt.value = m; opt.textContent = m;
-                select.appendChild(opt);
-            });
-            select.disabled = false;
-        }
-
-        function loadLiveYears() {
             const yearSelect = document.getElementById("carYear");
+            const engineSelect = document.getElementById("carEngine");
+            
+            modelSelect.innerHTML = '<option value="">2. Модель 🔽</option>';
             yearSelect.innerHTML = '<option value="">3. Рік випуску 🔽</option>';
-            for(let y = 2025; y >= 2012; y--) {
-                let opt = document.createElement("option"); opt.value = y; opt.textContent = y + " рік";
-                yearSelect.appendChild(opt);
+            engineSelect.innerHTML = '<option value="">4. Двигун 🔽</option>';
+            modelSelect.disabled = false;
+            yearSelect.disabled = true;
+            engineSelect.disabled = true;
+
+            if(!brand || !vehiclesDatabase[brand]) return;
+
+            const models = vehiclesDatabase[brand].models;
+            for(let model in models) {
+                let opt = document.createElement("option");
+                opt.value = model;
+                opt.textContent = `${model} - ${models[model].years[0]}-${models[model].years[models[model].years.length-1]}`;
+                modelSelect.appendChild(opt);
             }
+        }
+
+        function loadYears() {
+            const brand = document.getElementById("carBrand").value;
+            const model = document.getElementById("carModel").value;
+            const yearSelect = document.getElementById("carYear");
+            const engineSelect = document.getElementById("carEngine");
+            
+            yearSelect.innerHTML = '<option value="">3. Рік випуску 🔽</option>';
+            engineSelect.innerHTML = '<option value="">4. Двигун 🔽</option>';
+            engineSelect.disabled = true;
+
+            if(!brand || !model || !vehiclesDatabase[brand] || !vehiclesDatabase[brand].models[model]) return;
+
+            const years = vehiclesDatabase[brand].models[model].years;
+            years.forEach(y => {
+                let opt = document.createElement("option");
+                opt.value = y;
+                opt.textContent = y;
+                yearSelect.appendChild(opt);
+            });
             yearSelect.disabled = false;
         }
 
-        function loadLiveEngines() {
-            const engSelect = document.getElementById("carEngine");
-            engSelect.innerHTML = '<option value="">4. Комплектація / Двигун 🔽</option>';
-            let engines = ["2.8 Cummins ISF Дизель", "2.7 Evotech Пропан-Бензин", "2.0 TDI німецький", "3.0 V6 CDI Турбо", "2.2 dCi Економічний", "1.6 MPI Стандарт"];
+        function loadEngines() {
+            const brand = document.getElementById("carBrand").value;
+            const model = document.getElementById("carModel").value;
+            const engineSelect = document.getElementById("carEngine");
+            
+            engineSelect.innerHTML = '<option value="">4. Двигун 🔽</option>';
+            
+            if(!brand || !model || !vehiclesDatabase[brand] || !vehiclesDatabase[brand].models[model]) return;
+
+            const engines = vehiclesDatabase[brand].models[model].engines;
             engines.forEach(e => {
-                let opt = document.createElement("option"); opt.value = e; opt.textContent = e;
-                engSelect.appendChild(opt);
+                let opt = document.createElement("option");
+                opt.value = e;
+                opt.textContent = e;
+                engineSelect.appendChild(opt);
             });
-            engSelect.disabled = false;
+            engineSelect.disabled = false;
         }
 
         function processSelectionOnly() {
@@ -981,11 +1021,12 @@
             const m = document.getElementById("carModel").value;
             const y = document.getElementById("carYear").value;
             const e = document.getElementById("carEngine").value;
-            if(!b || !m || !y || !e) { alert("Заповніть покроково всі 4 фільтри підбору!"); return; }
+            if(!b || !m || !y || !e) { alert("Заповніть всі 4 фільтри підбору!"); return; }
             
-            lastSelectedCarInfo = { brand: b, model: m, year: y, engine: e };
+            const brandName = vehiclesDatabase[b]?.name || b;
+            lastSelectedCarInfo = { brand: brandName, model: m, year: y, engine: e };
             
-            alert(`Успішна синхронізація! Обрано автомобіль ${b.toUpperCase()} ${m} (${y} р.)`);
+            alert(`Обрано автомобіль: ${brandName} ${m} (${y} р., ${e})`);
             selectCategory(activeCategory);
         }
 
@@ -994,10 +1035,11 @@
             const m = document.getElementById("carModel").value;
             const y = document.getElementById("carYear").value;
             const e = document.getElementById("carEngine").value;
-            if(!b || !m || !y || !e) { alert("Не можна зберегти порожнє авто! Спочатку оберіть параметри у фільтрах."); return; }
+            if(!b || !m || !y || !e) { alert("Спочатку оберіть параметри у фільтрах!"); return; }
             
-            localStorage.setItem("myGarageCar", `${b.toUpperCase()} ${m} (${y} р.в., Комплектація: ${e})`);
-            alert("Цю машину успішно додано та закріплено за вашим особистим Гаражем!");
+            const brandName = vehiclesDatabase[b]?.name || b;
+            localStorage.setItem("myGarageCar", `${brandName} ${m} (${y} р.в., ${e})`);
+            alert("Автомобіль додано до гаража!");
             checkGarageDisplay();
         }
 
@@ -1066,7 +1108,7 @@
             const email = document.getElementById("orderEmail").value.trim();
             const address = document.getElementById("orderAddress").value.trim();
 
-            if(!name || !phone || !address) { alert("Заповніть всі обов'язкові текстові поля!"); return; }
+            if(!name || !phone || !address) { alert("Заповніть всі обов'язкові поля!"); return; }
 
             const newOrder = {
                 id: Date.now(),
@@ -1083,7 +1125,7 @@
             globalOrders.push(newOrder);
             localStorage.setItem('ownerOrdersDb', JSON.stringify(globalOrders));
 
-            alert(`Замовлення надіслано власнику! Менеджер зв'яжеться з вами цілодобово.`);
+            alert(`Замовлення надіслано власнику! Менеджер зв'яжеться з вами.`);
             cart = []; localStorage.removeItem('userCart');
             updateCartDisplay();
             closeModal('checkoutFormModal');
@@ -1098,25 +1140,24 @@
                 client_name: order.clientName,
                 client_phone: order.clientPhone,
                 client_email: order.clientEmail,
-                email: order.clientEmail, 
                 total_price: order.total,
                 address: order.clientAddress
             };
 
-            emailjs.send("service_g8yo3kn", "ВСТАВ_СЮДИ_ТВІЙ_TEMPLATE_ID", templateParams)
+            emailjs.send("service_g8yo3kn", "ВАШ_TEMPLATE_ID", templateParams)
                 .then(function() {
-                    alert(`Замовлення №${orderId} успішно опрацьовано! Сповіщення надіслано на вашу пошту kirillslinko21@gmail.com`);
+                    alert(`Замовлення №${orderId} опрацьовано!`);
                     order.status = "ACCEPTED";
                     localStorage.setItem('ownerOrdersDb', JSON.stringify(globalOrders));
                     openOrdersModal();
                 }, function(err) {
                     console.log("Помилка EmailJS:", err);
-                    alert("Помилка відправки. Перевірте, чи правильно вказано Template ID у коді.");
+                    alert("Помилка відправки.");
                 });
         }
 
         function deleteOrder(orderId) {
-            if(!confirm("Ви впевнені, що хочете видалити картку замовлення?")) return;
+            if(!confirm("Видалити замовлення?")) return;
             globalOrders = globalOrders.filter(o => o.id !== orderId);
             localStorage.setItem('ownerOrdersDb', JSON.stringify(globalOrders));
             openOrdersModal();
@@ -1126,30 +1167,28 @@
             const container = document.getElementById("ordersContainer");
             container.innerHTML = "";
             if(globalOrders.length === 0) {
-                container.innerHTML = "<p style='text-align:center; padding:20px; color:#64748b;'>База замовлень порожня.</p>";
+                container.innerHTML = "<p style='text-align:center; padding:20px; color:#64748b;'>Замовлень немає.</p>";
             } else {
                 [...globalOrders].reverse().forEach(ord => {
                     let box = document.createElement("div");
                     box.className = "order-card-box";
                     let statusHtml = ord.status === "ACCEPTED" 
-                        ? `<span class="order-status-badge status-accepted">✓ Прийнято та Опрацьовано</span>`
-                        : `<span class="order-status-badge status-new">⏳ Нове замовлення</span>`;
+                        ? `<span class="order-status-badge status-accepted">✓ Прийнято</span>`
+                        : `<span class="order-status-badge status-new">⏳ Нове</span>`;
 
                     box.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; font-size:12px; color:#64748b; margin-bottom:5px;">
-                            <strong>Замовлення №${ord.id}</strong> <span>📅 ${ord.date}</span>
+                        <div style="display:flex; justify-content:space-between; font-size:12px; color:#64748b;">
+                            <strong>№${ord.id}</strong> <span>📅 ${ord.date}</span>
                         </div>
                         ${statusHtml}
-                        <p style="font-size:14px;">👤 <strong>Клієнт:</strong> ${ord.clientName}</p>
-                        <p style="font-size:14px;">📞 <strong>Телефон:</strong> ${ord.clientPhone}</p>
-                        <p style="font-size:14px;">✉️ <strong>Email:</strong> ${ord.clientEmail}</p>
-                        <p style="font-size:14px; color:#c2410c;">📍 <strong>Адреса доставки:</strong> ${ord.clientAddress}</p>
-                        <div style="background:#f1f5f9; padding:8px; border-radius:4px; margin-top:8px; font-size:13px;">
-                            ${ord.items.map(it => `<div>• ${it.name} — <strong>${it.price} грн</strong></div>`).join('')}
+                        <p>👤 ${ord.clientName} | 📞 ${ord.clientPhone}</p>
+                        <p>📍 ${ord.clientAddress}</p>
+                        <div style="background:#f1f5f9; padding:8px; border-radius:4px; font-size:13px;">
+                            ${ord.items.map(it => `<div>• ${it.name} — ${it.price} грн</div>`).join('')}
                         </div>
-                        <div style="text-align:right; font-weight:bold; margin-top:5px; color:#1e3a8a;">Сума замовлення: ${ord.total} грн</div>
+                        <div style="text-align:right; font-weight:bold;">Сума: ${ord.total} грн</div>
                         <div class="order-actions">
-                            ${ord.status !== "ACCEPTED" ? `<button class="btn-order-accept" onclick="acceptOrder(${ord.id})">✅ Прийняти та надіслати листа</button>` : '<div style="flex:1; color:#16a34a; font-weight:600; font-size:13px; align-self:center;">Опрацьовано</div>'}
+                            ${ord.status !== "ACCEPTED" ? `<button class="btn-order-accept" onclick="acceptOrder(${ord.id})">✅ Прийняти</button>` : '<div style="color:#16a34a;">Опрацьовано</div>'}
                             <button class="btn-order-delete" onclick="deleteOrder(${ord.id})">❌ Видалити</button>
                         </div>
                     `;
@@ -1164,11 +1203,11 @@
             const phone = document.getElementById("regPhone").value.trim();
             const email = document.getElementById("regEmail").value.trim();
             const pass = document.getElementById("regPass").value;
-            if(!name || !phone || !email || !pass) { alert("Заповніть всі реєстраційні форми!"); return; }
-            if(registeredUsers.some(u => u.email === email)) { alert("Цей Email вже зайнятий!"); return; }
+            if(!name || !phone || !email || !pass) { alert("Заповніть всі поля!"); return; }
+            if(registeredUsers.some(u => u.email === email)) { alert("Email вже зайнятий!"); return; }
             registeredUsers.push({ name: name, phone: phone, email: email, pass: pass });
             localStorage.setItem('siteUsersDb', JSON.stringify(registeredUsers));
-            alert("Обліковий запис активовано! Увійдіть у кабінет.");
+            alert("Реєстрація успішна!");
             closeModal('registerModal'); openModal('loginModal');
         }
 
@@ -1182,14 +1221,14 @@
                 document.getElementById("loggedInName").textContent = found.name;
                 document.getElementById("adminTag").innerHTML = "";
                 closeModal('loginModal'); checkGarageDisplay();
-            } else { alert("Помилка пароля або логіна!"); }
+            } else { alert("Невірний логін або пароль!"); }
         }
 
         function openClientsModal() {
             const tbody = document.getElementById("clientsTableBody");
             tbody.innerHTML = "";
             if(registeredUsers.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>База клієнтів пуста</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='3'>Немає клієнтів</td></tr>";
             } else {
                 registeredUsers.forEach(u => {
                     let tr = document.createElement("tr");
@@ -1207,10 +1246,10 @@
             const price = document.getElementById("addProdPrice").value;
             const img = document.getElementById("addProdImg").value.trim();
             const inStock = document.getElementById("addProdStock").value === "true";
-            if(!name || !sku || !price) { alert("Заповніть обов'язкові параметри!"); return; }
+            if(!name || !sku || !price) { alert("Заповніть обов'язкові поля!"); return; }
             partsCatalog[cat].push({ id: Date.now(), name: name, price: parseInt(price), sku: sku, img: img, inStock: inStock });
             localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
-            alert("Новий товар додано до каталогу сайту!");
+            alert("Товар додано!");
             closeModal('addProductModal'); selectCategory(cat);
         }
 
@@ -1235,7 +1274,7 @@
             const newInStock = document.getElementById("editProdStock").value === "true";
 
             if(!newName || !newSku || !newPrice) {
-                alert("Будь ласка, заповніть всі поля!");
+                alert("Заповніть всі поля!");
                 return;
             }
 
@@ -1250,40 +1289,31 @@
                     inStock: newInStock
                 };
                 localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
-                alert("Товар успішно оновлено!");
+                alert("Товар оновлено!");
                 closeModal('editProductModal');
                 selectCategory(activeCategory);
-                if(document.getElementById("partSearchInput").value.trim() !== "") {
-                    executeSearch();
-                }
-            } else {
-                alert("Помилка: товар не знайдено!");
+                if(document.getElementById("partSearchInput").value.trim() !== "") executeSearch();
             }
         }
 
         function ownerSaveVehicleToDb() {
             let brand = document.getElementById("dbNewBrandInput").value.trim().toLowerCase();
             const model = document.getElementById("dbModelInput").value.trim();
-            
-            if(!brand || !model) { alert("Будь ласка, заповніть Марку та Модель!"); return; }
-            if(!localCustomVehicles[brand]) {
-                localCustomVehicles[brand] = [];
-            }
+            if(!brand || !model) { alert("Заповніть марку та модель!"); return; }
+            if(!localCustomVehicles[brand]) localCustomVehicles[brand] = [];
             localCustomVehicles[brand].push(model);
             localStorage.setItem('customVehicleDb', JSON.stringify(localCustomVehicles));
-            alert(`Машину "${model}" додано в локальний резерв бренду "${brand}"!`);
+            alert(`Модель "${model}" додано для марки "${brand}"!`);
             closeModal('manageVehiclesModal');
         }
 
         function deleteProductByOwner(category, productId) {
             if(!isOwnerLoggedIn) return;
-            if(!confirm("Остаточно видалити картку товару з вітрини?")) return;
-            if(partsCatalog[category]) {
-                partsCatalog[category] = partsCatalog[category].filter(p => p.id !== productId);
-                localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
-                selectCategory(activeCategory);
-                document.getElementById("searchResultArea").innerHTML = "";
-            }
+            if(!confirm("Видалити товар?")) return;
+            partsCatalog[category] = partsCatalog[category].filter(p => p.id !== productId);
+            localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
+            selectCategory(activeCategory);
+            document.getElementById("searchResultArea").innerHTML = "";
         }
 
         function executeSearch() {
@@ -1300,32 +1330,23 @@
                 });
             }
             if (results.length > 0) {
-                area.innerHTML = `<div style="background:white; border:1px solid #cbd5e1; padding:15px; border-radius:6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                area.innerHTML = `<div style="background:white; border:1px solid #cbd5e1; padding:15px; border-radius:6px;">
                     ${results.map(p => {
-                        const stockStatusHtml = p.inStock 
-                            ? '<span class="stock-status stock-in">✅ Є в наявності</span>' 
-                            : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
-                        const buyButtonHtml = p.inStock 
-                            ? `<button class="btn" style="padding:5px 10px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">Купити</button>`
-                            : `<button class="btn btn-disabled" style="padding:5px 10px; font-size:13px; background-color:#9ca3af !important;" disabled>Немає в наявності</button>`;
-                        return `
-                            <div style="margin-bottom:10px; padding:10px; background:#f8fafc; border-radius:4px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <span><strong>${p.name}</strong> (${p.sku}) — <strong style="color:var(--accent-color);">${p.price} грн</strong></span>
-                                    ${stockStatusHtml}
-                                </div>
-                                <div style="display:flex; gap:5px;">
-                                    ${buyButtonHtml}
-                                    ${isOwnerLoggedIn ? `<button class="btn" style="background:#ef4444; padding:5px 10px; font-size:13px;" onclick="deleteProductByOwner('${p.currentCategory}', ${p.id})">❌</button>
-                                    <button class="btn" style="background:#3b82f6; padding:5px 10px; font-size:13px;" onclick='openEditProductModal("${p.currentCategory}", ${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️</button>
-                                    <button class="btn" style="background:#6b7280; padding:5px 10px; font-size:13px;" onclick="toggleStockStatus('${p.currentCategory}', ${p.id})">${p.inStock ? '📦 Позначити відсутнім' : '📦 Позначити в наявності'}</button>` : ''}
-                                </div>
+                        const stockStatusHtml = p.inStock ? '<span class="stock-status stock-in">✅ Є в наявності</span>' : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
+                        const buyButtonHtml = p.inStock ? `<button class="btn" style="padding:5px 10px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">Купити</button>` : `<button class="btn btn-disabled" style="padding:5px 10px; font-size:13px;" disabled>Немає</button>`;
+                        return `<div style="margin-bottom:10px; padding:10px; background:#f8fafc; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+                            <div><strong>${p.name}</strong> (${p.sku}) — <strong style="color:var(--accent-color);">${p.price} грн</strong> ${stockStatusHtml}</div>
+                            <div style="display:flex; gap:5px;">
+                                ${buyButtonHtml}
+                                ${isOwnerLoggedIn ? `<button class="btn" style="background:#ef4444; padding:5px 10px;" onclick="deleteProductByOwner('${p.currentCategory}', ${p.id})">❌</button>
+                                <button class="btn" style="background:#3b82f6; padding:5px 10px;" onclick='openEditProductModal("${p.currentCategory}", ${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️</button>
+                                <button class="btn" style="background:#6b7280; padding:5px 10px;" onclick="toggleStockStatus('${p.currentCategory}', ${p.id})">${p.inStock ? '📦 Немає' : '📦 Є'}</button>` : ''}
                             </div>
-                        `;
+                        </div>`;
                     }).join('')}
                 </div>`;
             } else {
-                area.innerHTML = `<div style="background:#fef2f2; padding:15px; border-radius:6px; color:#991b1b; font-weight:500; border:1px solid #fca5a5;">❌ На складі Любашівка за цим номером нічого не знайдено. Дзвоніть 067 993 1624!</div>`;
+                area.innerHTML = `<div style="background:#fef2f2; padding:15px; border-radius:6px; color:#991b1b;">❌ Не знайдено. Дзвоніть 067 993 1624!</div>`;
             }
         }
 
@@ -1336,28 +1357,20 @@
             
             let displayTitle = `Категорія: ${cat}`;
             if(lastSelectedCarInfo) {
-                displayTitle += ` (Обрано авто: ${lastSelectedCarInfo.brand.toUpperCase()} ${lastSelectedCarInfo.model})`;
+                displayTitle += ` (Авто: ${lastSelectedCarInfo.brand} ${lastSelectedCarInfo.model})`;
             }
             document.getElementById("productsTitle").textContent = displayTitle;
             grid.innerHTML = "";
 
-            let currentItems = [];
-            if (partsCatalog[cat]) {
-                currentItems = [...partsCatalog[cat]];
-            }
+            let currentItems = partsCatalog[cat] || [];
 
             if (currentItems.length > 0) {
                 currentItems.forEach(p => {
                     let card = document.createElement("div");
                     card.className = "product-item-card";
                     
-                    const stockStatusHtml = p.inStock 
-                        ? '<span class="stock-status stock-in">✅ Є в наявності</span>' 
-                        : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
-                    
-                    const buyButtonHtml = p.inStock 
-                        ? `<button class="btn" style="padding:7px 15px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">В кошик</button>`
-                        : `<button class="btn btn-disabled" style="padding:7px 15px; font-size:13px; background-color:#9ca3af !important;" disabled>Немає в наявності</button>`;
+                    const stockStatusHtml = p.inStock ? '<span class="stock-status stock-in">✅ Є в наявності</span>' : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
+                    const buyButtonHtml = p.inStock ? `<button class="btn" style="padding:7px 15px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">В кошик</button>` : `<button class="btn btn-disabled" style="padding:7px 15px;" disabled>Немає в наявності</button>`;
                     
                     let adminButtonsHtml = "";
                     if(isOwnerLoggedIn) {
@@ -1373,15 +1386,15 @@
                     card.innerHTML = `
                         <div>
                             <div class="product-img-box">
-                                ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5"><path d="m21 16-4-4-4 4M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2z"/></svg>`}
+                                ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1"><path d="m21 16-4-4-4 4M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2z"/></svg>`}
                             </div>
-                            <h4 style="font-size:15px; font-weight:600;">${p.name}</h4>
-                            <p style="font-size:12px; color:#64748b;">Номер/VIN: <strong>${p.sku}</strong></p>
+                            <h4 style="font-size:15px;">${p.name}</h4>
+                            <p style="font-size:12px; color:#64748b;">Номер: <strong>${p.sku}</strong></p>
                             ${stockStatusHtml}
                         </div>
                         <div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                                <span style="font-weight:bold; color:var(--accent-color); font-size:17px;">${p.price} грн</span>
+                            <div style="display:flex; justify-content:space-between; margin-top:15px;">
+                                <span style="font-weight:bold; color:var(--accent-color);">${p.price} грн</span>
                                 ${buyButtonHtml}
                             </div>
                             ${adminButtonsHtml}
@@ -1390,7 +1403,7 @@
                     grid.appendChild(card);
                 });
             } else { 
-                grid.innerHTML = "<p style='color:#64748b; padding:15px;'>Товари в цій категорії скоро з'являться.</p>"; 
+                grid.innerHTML = "<p style='color:#64748b; padding:15px;'>Товари скоро з'являться.</p>"; 
             }
             section.style.display = "block";
         }
