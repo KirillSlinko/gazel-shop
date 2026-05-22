@@ -413,7 +413,7 @@
         .btn-delete-item {
             background: #b91c1c; 
             color: white; 
-            width: 100%; 
+            width: 48%; 
             margin-top: 8px;
             padding: 6px; 
             font-size: 12px; 
@@ -421,6 +421,7 @@
             border-radius: 4px; 
             cursor: pointer;
             font-weight: bold; 
+            display: inline-block;
         }
 
         .btn-edit-item {
@@ -437,10 +438,42 @@
             display: inline-block;
         }
 
+        .btn-toggle-stock {
+            background: #6b7280;
+            color: white;
+            width: 100%;
+            margin-top: 5px;
+            padding: 5px;
+            font-size: 11px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .admin-buttons-row {
             display: flex;
             gap: 4%;
             margin-top: 8px;
+        }
+
+        .stock-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .stock-in {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stock-out {
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .garage-box {
@@ -513,6 +546,11 @@
             font-weight: bold; 
             text-decoration: none; 
             z-index: 999;
+        }
+
+        .btn-disabled {
+            background-color: #9ca3af !important;
+            cursor: not-allowed !important;
         }
 
         @media (max-width: 992px) {
@@ -720,6 +758,12 @@
             <div class="form-field"><label>Номер / Артикул:</label><input type="text" id="addProdSku"></div>
             <div class="form-field"><label>Ціна (грн):</label><input type="number" id="addProdPrice"></div>
             <div class="form-field"><label>Посилання на фото:</label><input type="text" id="addProdImg"></div>
+            <div class="form-field"><label>Статус наявності:</label>
+                <select id="addProdStock">
+                    <option value="true">✅ Є в наявності</option>
+                    <option value="false">❌ Немає в наявності</option>
+                </select>
+            </div>
             <button class="btn" style="background-color: #10b981; width:100%;" onclick="ownerSaveProduct()">Опублікувати</button>
         </div>
     </div>
@@ -735,6 +779,12 @@
             <div class="form-field"><label>Номер / Артикул (VIN):</label><input type="text" id="editProdSku"></div>
             <div class="form-field"><label>Ціна (грн):</label><input type="number" id="editProdPrice"></div>
             <div class="form-field"><label>Посилання на фото:</label><input type="text" id="editProdImg"></div>
+            <div class="form-field"><label>Статус наявності:</label>
+                <select id="editProdStock">
+                    <option value="true">✅ Є в наявності</option>
+                    <option value="false">❌ Немає в наявності</option>
+                </select>
+            </div>
             <button class="btn" style="background-color: #3b82f6; width:100%;" onclick="saveProductEdit()">💾 Зберегти зміни</button>
         </div>
     </div>
@@ -780,7 +830,7 @@
     <script>
         let isOwnerLoggedIn = false;
         let activeCategory = "Двигун та вихлоп";
-        let lastSelectedCarInfo = null; // Зберігає вибрану марку/модель для розумної генерації деталей
+        let lastSelectedCarInfo = null;
 
         // Резервна локальна база для машин
         let localCustomVehicles = JSON.parse(localStorage.getItem('customVehicleDb')) || {
@@ -788,54 +838,54 @@
             "камаз": ["КамАЗ 5490 (Тягач)", "КамАЗ 43118", "КамАЗ 65115"]
         };
 
-        // Статичний базовий каталог запчастин (Основа Любашівки)
+        // Каталог запчастин з полем inStock
         let partsCatalog = JSON.parse(localStorage.getItem('globalCatalog')) || {
             "Двигун та вихлоп": [
-                { id: 1, name: "Прокладка ГБЦ Газель (двигун 405)", price: 450, sku: "405.1003020", img: "" },
-                { id: 2, name: "Глушник основний Газель 3302", price: 1850, sku: "3302-1201010", img: "" },
-                { id: 101, name: "Поршень з пальцем Cummins 2.8 ГАЗель", price: 2100, sku: "4995266", img: "" },
-                { id: 113, name: "Радіатор охолодження Газель Бізнес 3-х рядний", price: 4100, sku: "33027-1301010", img: "" },
-                { id: 114, name: "Ланцюг ГРМ ГАЗ-3302 двигун 406/405 комплект", price: 1950, sku: "406.3906625", img: "" },
-                { id: 115, name: "Помпа охолодження двигуна Cummins ISF 2.8", price: 2600, sku: "5269897", img: "" },
-                { id: 116, name: "Датчик тиску масла ГАЗель Next Cummins", price: 680, sku: "4921477", img: "" }
+                { id: 1, name: "Прокладка ГБЦ Газель (двигун 405)", price: 450, sku: "405.1003020", img: "", inStock: true },
+                { id: 2, name: "Глушник основний Газель 3302", price: 1850, sku: "3302-1201010", img: "", inStock: true },
+                { id: 101, name: "Поршень з пальцем Cummins 2.8 ГАЗель", price: 2100, sku: "4995266", img: "", inStock: true },
+                { id: 113, name: "Радіатор охолодження Газель Бізнес 3-х рядний", price: 4100, sku: "33027-1301010", img: "", inStock: true },
+                { id: 114, name: "Ланцюг ГРМ ГАЗ-3302 двигун 406/405 комплект", price: 1950, sku: "406.3906625", img: "", inStock: true },
+                { id: 115, name: "Помпа охолодження двигуна Cummins ISF 2.8", price: 2600, sku: "5269897", img: "", inStock: true },
+                { id: 116, name: "Датчик тиску масла ГАЗель Next Cummins", price: 680, sku: "4921477", img: "", inStock: true }
             ],
             "Гальмівна система": [
-                { id: 4, name: "Диск гальмівний передній Газель", price: 950, sku: "3302-3501077", img: "" },
-                { id: 201, name: "Колодки гальмівні передні Газель ТІІР", price: 480, sku: "3302-3501090", img: "" },
-                { id: 202, name: "Циліндр гальмівний головний з бачком ГАЗ-3302", price: 1350, sku: "3302-3505010", img: "" },
-                { id: 203, name: "Ваккумний підсилювач гальм ГАЗель Бізнес Bosch", price: 3900, sku: "0204702834", img: "" },
-                { id: 204, name: "Шланг гальмівний передній ГАЗ-3302 довгий", price: 240, sku: "3302-3506025", img: "" }
+                { id: 4, name: "Диск гальмівний передній Газель", price: 950, sku: "3302-3501077", img: "", inStock: true },
+                { id: 201, name: "Колодки гальмівні передні Газель ТІІР", price: 480, sku: "3302-3501090", img: "", inStock: true },
+                { id: 202, name: "Циліндр гальмівний головний з бачком ГАЗ-3302", price: 1350, sku: "3302-3505010", img: "", inStock: true },
+                { id: 203, name: "Ваккумний підсилювач гальм ГАЗель Бізнес Bosch", price: 3900, sku: "0204702834", img: "", inStock: true },
+                { id: 204, name: "Шланг гальмівний передній ГАЗ-3302 довгий", price: 240, sku: "3302-3506025", img: "", inStock: true }
             ],
             "Підвіска та кермо": [
-                { id: 6, name: "Ресора задня Газель 3-х листова", price: 3100, sku: "3302-2912012", img: "" },
-                { id: 301, name: "Ресора передня Газель 2-х листова підсилена", price: 2450, sku: "3302-2902011", img: "" },
-                { id: 302, name: "Амортизатор передній/задній ГАЗель Бізнес Sachs", price: 1150, sku: "451310001", img: "" },
-                { id: 303, name: "Шкворень ГАЗ-3302 комплект на 2 сторони (на підшипниках)", price: 850, sku: "3302-3000100", img: "" },
-                { id: 304, name: "Наконечник рульової тяги ГАЗель правий/лівий комплект", price: 790, sku: "3302-3414010", img: "" }
+                { id: 6, name: "Ресора задня Газель 3-х листова", price: 3100, sku: "3302-2912012", img: "", inStock: true },
+                { id: 301, name: "Ресора передня Газель 2-х листова підсилена", price: 2450, sku: "3302-2902011", img: "", inStock: true },
+                { id: 302, name: "Амортизатор передній/задній ГАЗель Бізнес Sachs", price: 1150, sku: "451310001", img: "", inStock: true },
+                { id: 303, name: "Шкворень ГАЗ-3302 комплект на 2 сторони (на підшипниках)", price: 850, sku: "3302-3000100", img: "", inStock: true },
+                { id: 304, name: "Наконечник рульової тяги ГАЗель правий/лівий комплект", price: 790, sku: "3302-3414010", img: "", inStock: true }
             ],
             "Електрика та світло": [
-                { id: 7, name: "Стартер Газель (дв. 405)", price: 3400, sku: "922.3708", img: "" },
-                { id: 402, name: "Стартер Газель NEXT дв. Cummins 2.8", price: 5200, sku: "5266969", img: "" },
-                { id: 403, name: "Генератор ГАЗель Бізнес двигун УМЗ-4216 120А", price: 4200, sku: "3212.3771", img: "" },
-                { id: 404, name: "Фара передня ліва ГАЗель Бізнес (ГАЗ оригінал)", price: 3100, sku: "3302-3711011", img: "" },
-                { id: 405, name: "Котушка запалювання ГАЗ-3302 двигун 405/406", price: 650, sku: "406.3705000", img: "" }
+                { id: 7, name: "Стартер Газель (дв. 405)", price: 3400, sku: "922.3708", img: "", inStock: true },
+                { id: 402, name: "Стартер Газель NEXT дв. Cummins 2.8", price: 5200, sku: "5266969", img: "", inStock: true },
+                { id: 403, name: "Генератор ГАЗель Бізнес двигун УМЗ-4216 120А", price: 4200, sku: "3212.3771", img: "", inStock: true },
+                { id: 404, name: "Фара передня ліва ГАЗель Бізнес (ГАЗ оригінал)", price: 3100, sku: "3302-3711011", img: "", inStock: true },
+                { id: 405, name: "Котушка запалювання ГАЗ-3302 двигун 405/406", price: 650, sku: "406.3705000", img: "", inStock: true }
             ],
             "Масла та автохімія": [
-                { id: 501, name: "Масло моторне Shell Rimula R4 X 15W-40 5л", price: 1450, sku: "RIMULA5L", img: "" },
-                { id: 502, name: "Антифриз Felix Carbox Червоний G12+ 5кг", price: 580, sku: "FELIXG125K", img: "" },
-                { id: 503, name: "Масло трансмісійне ТАД-17і (ТМ-5-18) 4л Олрайт", price: 490, sku: "TAD174L", img: "" }
+                { id: 501, name: "Масло моторне Shell Rimula R4 X 15W-40 5л", price: 1450, sku: "RIMULA5L", img: "", inStock: true },
+                { id: 502, name: "Антифриз Felix Carbox Червоний G12+ 5кг", price: 580, sku: "FELIXG125K", img: "", inStock: true },
+                { id: 503, name: "Масло трансмісійне ТАД-17і (ТМ-5-18) 4л Олрайт", price: 490, sku: "TAD174L", img: "", inStock: true }
             ],
             "Акумулятори": [
-                { id: 601, name: "Акумулятор ISTA 6CT-75 Amps", price: 2950, sku: "ISTA75", img: "" },
-                { id: 602, name: "Акумулятор Forse 6CT-100 Аг для вантажівок", price: 4100, sku: "FORSE100", img: "" }
+                { id: 601, name: "Акумулятор ISTA 6CT-75 Amps", price: 2950, sku: "ISTA75", img: "", inStock: true },
+                { id: 602, name: "Акумулятор Forse 6CT-100 Аг для вантажівок", price: 4100, sku: "FORSE100", img: "", inStock: true }
             ],
             "Щітки (Дворники)": [
-                { id: 701, name: "Щітки склоочисника Газель Bosch Eco", price: 380, sku: "3397004584", img: "" }
+                { id: 701, name: "Щітки склоочисника Газель Bosch Eco", price: 380, sku: "3397004584", img: "", inStock: true }
             ],
             "ТО та фільтри": [
-                { id: 804, name: "Фільтр масляний Cummins 2.8 Fleetguard", price: 850, sku: "LF16352", img: "" },
-                { id: 805, name: "Фільтр паливний сепаратор Cummins Next ГАЗель", price: 920, sku: "FS19925", img: "" },
-                { id: 806, name: "Фільтр повітряний ГАЗель Next/Бізнес бочка", price: 450, sku: "3302-1109010", img: "" }
+                { id: 804, name: "Фільтр масляний Cummins 2.8 Fleetguard", price: 850, sku: "LF16352", img: "", inStock: true },
+                { id: 805, name: "Фільтр паливний сепаратор Cummins Next ГАЗель", price: 920, sku: "FS19925", img: "", inStock: true },
+                { id: 806, name: "Фільтр повітряний ГАЗель Next/Бізнес бочка", price: 450, sku: "3302-1109010", img: "", inStock: true }
             ]
         };
 
@@ -843,7 +893,20 @@
         let registeredUsers = JSON.parse(localStorage.getItem('siteUsersDb')) || [];
         let globalOrders = JSON.parse(localStorage.getItem('ownerOrdersDb')) || [];
 
-        // 🌐 ЖИВЕ API ЗАВАНТАЖЕННЯ МОДЕЛЕЙ З МЕРЕЖІ
+        // Функція перемикання статусу наявності
+        function toggleStockStatus(category, productId) {
+            if(!isOwnerLoggedIn) return;
+            const product = partsCatalog[category].find(p => p.id === productId);
+            if(product) {
+                product.inStock = !product.inStock;
+                localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
+                selectCategory(activeCategory);
+                if(document.getElementById("partSearchInput").value.trim() !== "") {
+                    executeSearch();
+                }
+            }
+        }
+
         async function loadLiveModels() {
             const brand = document.getElementById("carBrand").value;
             const modelSelect = document.getElementById("carModel");
@@ -913,7 +976,6 @@
             engSelect.disabled = false;
         }
 
-        // КНОПКА ПІДБОРУ: Активує підбір та зберігає обрану конфігурацію авто для крос-генерації Omega
         function processSelectionOnly() {
             const b = document.getElementById("carBrand").value;
             const m = document.getElementById("carModel").value;
@@ -921,14 +983,12 @@
             const e = document.getElementById("carEngine").value;
             if(!b || !m || !y || !e) { alert("Заповніть покроково всі 4 фільтри підбору!"); return; }
             
-            // Запам'ятовуємо обране авто для динамічного завантаження під кожну категорію
             lastSelectedCarInfo = { brand: b, model: m, year: y, engine: e };
             
-            alert(`Успішна синхронізація! Оригінальний каталог детальованого підбору для ${b.toUpperCase()} ${m} (${y} р.) завантажено в категорії нижче.`);
-            selectCategory("Двигун та вихлоп");
+            alert(`Успішна синхронізація! Обрано автомобіль ${b.toUpperCase()} ${m} (${y} р.)`);
+            selectCategory(activeCategory);
         }
 
-        // КНОПКА 2: Окреме ручне збереження в Гараж
         function saveToGarageSeparately() {
             const b = document.getElementById("carBrand").value;
             const m = document.getElementById("carModel").value;
@@ -1146,14 +1206,14 @@
             const sku = document.getElementById("addProdSku").value.trim();
             const price = document.getElementById("addProdPrice").value;
             const img = document.getElementById("addProdImg").value.trim();
+            const inStock = document.getElementById("addProdStock").value === "true";
             if(!name || !sku || !price) { alert("Заповніть обов'язкові параметри!"); return; }
-            partsCatalog[cat].push({ id: Date.now(), name: name, price: parseInt(price), sku: sku, img: img });
+            partsCatalog[cat].push({ id: Date.now(), name: name, price: parseInt(price), sku: sku, img: img, inStock: inStock });
             localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
             alert("Новий товар додано до каталогу сайту!");
             closeModal('addProductModal'); selectCategory(cat);
         }
 
-        // Функція відкриття модального вікна редагування
         function openEditProductModal(category, product) {
             document.getElementById("editProductId").value = product.id;
             document.getElementById("editProductCategory").value = category;
@@ -1161,10 +1221,10 @@
             document.getElementById("editProdSku").value = product.sku;
             document.getElementById("editProdPrice").value = product.price;
             document.getElementById("editProdImg").value = product.img || "";
+            document.getElementById("editProdStock").value = product.inStock ? "true" : "false";
             openModal('editProductModal');
         }
 
-        // Функція збереження відредагованого товару
         function saveProductEdit() {
             const productId = parseInt(document.getElementById("editProductId").value);
             const category = document.getElementById("editProductCategory").value;
@@ -1172,13 +1232,13 @@
             const newSku = document.getElementById("editProdSku").value.trim();
             const newPrice = parseInt(document.getElementById("editProdPrice").value);
             const newImg = document.getElementById("editProdImg").value.trim();
+            const newInStock = document.getElementById("editProdStock").value === "true";
 
             if(!newName || !newSku || !newPrice) {
                 alert("Будь ласка, заповніть всі поля!");
                 return;
             }
 
-            // Знаходимо товар у каталозі та оновлюємо
             const productIndex = partsCatalog[category].findIndex(p => p.id === productId);
             if(productIndex !== -1) {
                 partsCatalog[category][productIndex] = {
@@ -1186,13 +1246,13 @@
                     name: newName,
                     sku: newSku,
                     price: newPrice,
-                    img: newImg
+                    img: newImg,
+                    inStock: newInStock
                 };
                 localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
                 alert("Товар успішно оновлено!");
                 closeModal('editProductModal');
-                selectCategory(activeCategory); // Оновлюємо відображення
-                // Також оновлюємо результати пошуку, якщо вони відкриті
+                selectCategory(activeCategory);
                 if(document.getElementById("partSearchInput").value.trim() !== "") {
                     executeSearch();
                 }
@@ -1230,7 +1290,7 @@
             let input = document.getElementById("partSearchInput").value;
             let clean = input.replace(/[\s\-]/g, '').toLowerCase();
             let area = document.getElementById("searchResultArea");
-            if(clean === "") return;
+            if(clean === "") { area.innerHTML = ""; return; }
             let results = [];
             for (let cat in partsCatalog) {
                 partsCatalog[cat].forEach(p => {
@@ -1241,23 +1301,34 @@
             }
             if (results.length > 0) {
                 area.innerHTML = `<div style="background:white; border:1px solid #cbd5e1; padding:15px; border-radius:6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                    ${results.map(p => `
-                        <div style="margin-bottom:10px; padding:10px; background:#f8fafc; border-radius:4px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-                            <span><strong>${p.name}</strong> (${p.sku}) — <strong style="color:var(--accent-color);">${p.price} грн</strong></span>
-                            <div style="display:flex; gap:5px;">
-                                <button class="btn" style="padding:5px 10px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">Купити</button>
-                                ${isOwnerLoggedIn ? `<button class="btn" style="background:#ef4444; padding:5px 10px; font-size:13px;" onclick="deleteProductByOwner('${p.currentCategory}', ${p.id})">❌</button>
-                                <button class="btn" style="background:#3b82f6; padding:5px 10px; font-size:13px;" onclick="openEditProductModal('${p.currentCategory}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">✏️</button>` : ''}
+                    ${results.map(p => {
+                        const stockStatusHtml = p.inStock 
+                            ? '<span class="stock-status stock-in">✅ Є в наявності</span>' 
+                            : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
+                        const buyButtonHtml = p.inStock 
+                            ? `<button class="btn" style="padding:5px 10px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">Купити</button>`
+                            : `<button class="btn btn-disabled" style="padding:5px 10px; font-size:13px; background-color:#9ca3af !important;" disabled>Немає в наявності</button>`;
+                        return `
+                            <div style="margin-bottom:10px; padding:10px; background:#f8fafc; border-radius:4px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <span><strong>${p.name}</strong> (${p.sku}) — <strong style="color:var(--accent-color);">${p.price} грн</strong></span>
+                                    ${stockStatusHtml}
+                                </div>
+                                <div style="display:flex; gap:5px;">
+                                    ${buyButtonHtml}
+                                    ${isOwnerLoggedIn ? `<button class="btn" style="background:#ef4444; padding:5px 10px; font-size:13px;" onclick="deleteProductByOwner('${p.currentCategory}', ${p.id})">❌</button>
+                                    <button class="btn" style="background:#3b82f6; padding:5px 10px; font-size:13px;" onclick='openEditProductModal("${p.currentCategory}", ${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️</button>
+                                    <button class="btn" style="background:#6b7280; padding:5px 10px; font-size:13px;" onclick="toggleStockStatus('${p.currentCategory}', ${p.id})">${p.inStock ? '📦 Позначити відсутнім' : '📦 Позначити в наявності'}</button>` : ''}
+                                </div>
                             </div>
-                        </div>
-                    `).join('')}
+                        `;
+                    }).join('')}
                 </div>`;
             } else {
                 area.innerHTML = `<div style="background:#fef2f2; padding:15px; border-radius:6px; color:#991b1b; font-weight:500; border:1px solid #fca5a5;">❌ На складі Любашівка за цим номером нічого не знайдено. Дзвоніть 067 993 1624!</div>`;
             }
         }
 
-        // РЕНДЕР КАТЕГОРІЙ: Поєднує стандартні деталі Любашівки з розумною крос-базою Omega під вибране авто
         function selectCategory(cat) {
             activeCategory = cat;
             const section = document.getElementById("productsSection");
@@ -1265,62 +1336,29 @@
             
             let displayTitle = `Категорія: ${cat}`;
             if(lastSelectedCarInfo) {
-                displayTitle += ` (Підібрано для ${lastSelectedCarInfo.brand.toUpperCase()} ${lastSelectedCarInfo.model})`;
+                displayTitle += ` (Обрано авто: ${lastSelectedCarInfo.brand.toUpperCase()} ${lastSelectedCarInfo.model})`;
             }
             document.getElementById("productsTitle").textContent = displayTitle;
             grid.innerHTML = "";
 
-            // Збираємо список товарів для відображення
             let currentItems = [];
-
-            // 1. Додаємо базові запчастини, які вже зашиті на складі магазину
             if (partsCatalog[cat]) {
                 currentItems = [...partsCatalog[cat]];
             }
 
-            // 2. СИНХРОНІЗАЦІЯ З OMEGA-КРОС БАЗОЮ: якщо машина обрана у фільтрі API, генеруємо під неї унікальні деталі з унікальними VIN-номерами
-            if (lastSelectedCarInfo) {
-                const bName = lastSelectedCarInfo.brand.toUpperCase();
-                const mName = lastSelectedCarInfo.model;
-                const seed = bName.charCodeAt(0) + mName.charCodeAt(0); // Генератор стабільних номерів деталей
-
-                if (cat === "Двигун та вихлоп") {
-                    currentItems.push(
-                        { id: 9001, name: `Комплект прокладок двигуна для ${bName} ${mName}`, price: 2450, sku: `OM-${seed}-EG1`, img: "" },
-                        { id: 9002, name: `Фільтр масляний двигуна (Оригінал Omega)`, price: 420, sku: `VIN-${seed+10}-M`, img: "" },
-                        { id: 9003, name: `Помпа охолодження водяна ${bName}`, price: 3100, sku: `MGA-${seed}-WP`, img: "" }
-                    );
-                } else if (cat === "Гальмівна система") {
-                    currentItems.push(
-                        { id: 9101, name: `Гальмівні диски передні (Комплект 2шт) ${bName}`, price: 4200, sku: `BR-${seed}-DSK`, img: "" },
-                        { id: 9102, name: `Колодки гальмівні керамічні Bosch для ${mName}`, price: 1650, sku: `VIN-${seed+25}-B`, img: "" },
-                        { id: 9103, name: `Шланг гальмівної системи високого тиску`, price: 580, sku: `OM-${seed}-BH`, img: "" }
-                    );
-                } else if (cat === "Підвіска та кермо") {
-                    currentItems.push(
-                        { id: 9201, name: `Амортизатор підвіски газомасляний Sachs`, price: 2890, sku: `SU-${seed}-AM`, img: "" },
-                        { id: 9202, name: `Сайлентблоки передніх важелів (Комплект)`, price: 1100, sku: `VIN-${seed+40}-S`, img: "" },
-                        { id: 9203, name: `Тяга рульова осьова ліва/права ${bName}`, price: 940, sku: `TR-${seed}-STR`, img: "" }
-                    );
-                } else if (cat === "Електрика та світло") {
-                    currentItems.push(
-                        { id: 9301, name: `Датчик положення колінчастого валу`, price: 1350, sku: `EL-${seed}-CKP`, img: "" },
-                        { id: 9302, name: `Свічка запалювання лінійна Platinum (1шт)`, price: 340, sku: `NGK-${seed}-PL`, img: "" }
-                    );
-                } else if (cat === "ТО та фільтри") {
-                    currentItems.push(
-                        { id: 9401, name: `Фільтр повітряний високої фільтрації салону`, price: 550, sku: `FI-${seed}-AIR`, img: "" },
-                        { id: 9402, name: `Фільтр паливний тонкої очистки для ${mName}`, price: 890, sku: `VIN-${seed+88}-F`, img: "" }
-                    );
-                }
-            }
-
-            // Рендеримо отримані результати на вітрину
             if (currentItems.length > 0) {
                 currentItems.forEach(p => {
                     let card = document.createElement("div");
                     card.className = "product-item-card";
-                    // Формуємо HTML-код картки з кнопкою редагування для адміна
+                    
+                    const stockStatusHtml = p.inStock 
+                        ? '<span class="stock-status stock-in">✅ Є в наявності</span>' 
+                        : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
+                    
+                    const buyButtonHtml = p.inStock 
+                        ? `<button class="btn" style="padding:7px 15px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">В кошик</button>`
+                        : `<button class="btn btn-disabled" style="padding:7px 15px; font-size:13px; background-color:#9ca3af !important;" disabled>Немає в наявності</button>`;
+                    
                     let adminButtonsHtml = "";
                     if(isOwnerLoggedIn) {
                         adminButtonsHtml = `
@@ -1328,8 +1366,10 @@
                                 <button class="btn-edit-item" onclick='openEditProductModal("${cat}", ${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️ Редагувати</button>
                                 <button class="btn-delete-item" onclick="deleteProductByOwner('${cat}', ${p.id})">❌ Видалити</button>
                             </div>
+                            <button class="btn-toggle-stock" onclick="toggleStockStatus('${cat}', ${p.id})">${p.inStock ? '📦 Позначити відсутнім' : '📦 Позначити в наявності'}</button>
                         `;
                     }
+                    
                     card.innerHTML = `
                         <div>
                             <div class="product-img-box">
@@ -1337,11 +1377,12 @@
                             </div>
                             <h4 style="font-size:15px; font-weight:600;">${p.name}</h4>
                             <p style="font-size:12px; color:#64748b;">Номер/VIN: <strong>${p.sku}</strong></p>
+                            ${stockStatusHtml}
                         </div>
                         <div>
                             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
                                 <span style="font-weight:bold; color:var(--accent-color); font-size:17px;">${p.price} грн</span>
-                                <button class="btn" style="padding:7px 15px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">В кошик</button>
+                                ${buyButtonHtml}
                             </div>
                             ${adminButtonsHtml}
                         </div>
