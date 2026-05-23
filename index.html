@@ -550,7 +550,6 @@
             cursor: not-allowed !important;
         }
 
-        /* Адмінська панель - видно тільки власнику */
         .admin-panel {
             background: #1e293b;
             padding: 10px 5%;
@@ -615,7 +614,6 @@
         </div>
     </div>
 
-    <!-- Адмінська панель - видно ТІЛЬКИ після входу власника -->
     <div id="adminPanel" class="admin-panel">
         <button class="btn" style="background-color: #10b981;" onclick="openModal('addProductModal')">➕ Додати нову деталь на сайт</button>
         <button class="btn" style="background-color: #f59e0b;" onclick="openModal('manageVehiclesModal')">⚙️ Резервне додавання авто</button>
@@ -774,7 +772,6 @@
         </div>
     </div>
 
-    <!-- Модальне вікно редагування товару -->
     <div id="editProductModal" class="modal-overlay">
         <div class="modal-content" style="border: 2px solid #3b82f6;">
             <button class="modal-close" onclick="closeModal('editProductModal')">×</button>
@@ -838,7 +835,7 @@
         let activeCategory = "Двигун та вихлоп";
         let lastSelectedCarInfo = null;
 
-        // Повна база даних автомобілів: марки, моделі, роки, двигуни
+        // Повна база даних автомобілів
         const vehiclesDatabase = {
             gazel: {
                 name: "ГАЗель",
@@ -919,7 +916,7 @@
 
         let localCustomVehicles = JSON.parse(localStorage.getItem('customVehicleDb')) || {};
 
-        // Каталог запчастин з полем inStock
+        // БАЗОВИЙ КАТАЛОГ імпортовано з вашого файлу
         let partsCatalog = JSON.parse(localStorage.getItem('globalCatalog')) || {
             "Двигун та вихлоп": [
                 { id: 1, name: "Прокладка ГБЦ Газель (двигун 405)", price: 450, sku: "405.1003020", img: "", inStock: true },
@@ -928,51 +925,171 @@
                 { id: 113, name: "Радіатор охолодження Газель Бізнес 3-х рядний", price: 4100, sku: "33027-1301010", img: "", inStock: true },
                 { id: 114, name: "Ланцюг ГРМ ГАЗ-3302 двигун 406/405 комплект", price: 1950, sku: "406.3906625", img: "", inStock: true },
                 { id: 115, name: "Помпа охолодження двигуна Cummins ISF 2.8", price: 2600, sku: "5269897", img: "", inStock: true },
-                { id: 116, name: "Датчик тиску масла ГАЗель Next Cummins", price: 680, sku: "4921477", img: "", inStock: true }
+                { id: 116, name: "Датчик тиску масла ГАЗель Next Cummins", price: 680, sku: "4921477", img: "", inStock: true },
+                { id: 10001, name: "Водяной насос ВАЗ 2101 - 07 ' НИВА. ' '' ДК ''", price: 0, sku: "01963", img: "", inStock: true },
+                { id: 10002, name: "Водяной насос ВАЗ 2108, 09 -10-15 ст/обр", price: 0, sku: "04624", img: "", inStock: true },
+                { id: 10003, name: "Водяной насос ВАЗ 2110-12-15   16кл. двг.", price: 0, sku: "02219", img: "", inStock: true },
+                { id: 10004, name: "Водяной насос ГАЗЕЛЬ - БИЗНЕС", price: 0, sku: "07050", img: "", inStock: true },
+                { id: 10005, name: "Водяной насос ВОЛГА-2410", price: 0, sku: "03563", img: "", inStock: true },
+                { id: 10006, name: "Водяной насос УАЗ ГАЗЕЛЬ (дв.4215-100л.с.)", price: 0, sku: "04463", img: "", inStock: true },
+                { id: 10007, name: "Водяной насос УАЗ '' ДК'' полупомпа", price: 0, sku: "05470", img: "", inStock: true },
+                { id: 10008, name: "Водяной нассос ВОЛГА-3110 ГАЗЕЛЬ 405дв. усл.подшипник с электромуфтой", price: 0, sku: "06306", img: "", inStock: true },
+                { id: 10009, name: "Водяной нассос ВОЛГА-3110 ГАЗЕЛЬ 406дв 405дв. без резьбы", price: 0, sku: "03525", img: "", inStock: true },
+                { id: 10010, name: "Водяной нассос ГАЗЕЛЬ-405-406 флянец резьба", price: 0, sku: "03994", img: "", inStock: true },
+                { id: 10011, name: "Водяной нассос ВОЛГА-2401 УАЗ", price: 0, sku: "02016", img: "", inStock: true },
+                { id: 10012, name: "Водяной насос КАМАЗ", price: 0, sku: "03524", img: "", inStock: true },
+                { id: 10013, name: "Термостат ВАЗ 2101 - 07 '' ДК''", price: 0, sku: "00315", img: "", inStock: true },
+                { id: 10014, name: "Термостат ВАЗ 2108 - 09 ' ДК '", price: 0, sku: "04876", img: "", inStock: true },
+                { id: 10015, name: "Термостат ВАЗ 2110 - 15. 21082 (вставка)", price: 0, sku: "03354", img: "", inStock: true },
+                { id: 10016, name: "Термостат ВАЗ 2110 - 15. в сборе инж. двиг.", price: 0, sku: "05977", img: "", inStock: true },
+                { id: 10017, name: "Термостат ВАЗ 2110-15 ст/обр. SCT Germany", price: 0, sku: "05065", img: "", inStock: true },
+                { id: 10018, name: "Термостат ВАЗ 2117 - 18 - 19 КАЛИНА в сборе", price: 0, sku: "03056", img: "", inStock: true },
+                { id: 10019, name: "Термостат ВАЗ 2117 - 18 - 19 . КАЛИНА (вставка)", price: 0, sku: "05066", img: "", inStock: true },
+                { id: 10020, name: "Термостат ВАЗ 2121 НИВА", price: 0, sku: "02689", img: "", inStock: true },
+                { id: 10021, name: "Термостат ВАЗ 2123 ' ДК '", price: 0, sku: "05978", img: "", inStock: true },
+                { id: 10022, name: "Термостат УАЗ (70 град.)", price: 0, sku: "05025", img: "", inStock: true },
+                { id: 10023, name: "Термостат ВОЛГА КАМАЗ ГАЗЕЛЬ 80 град.", price: 0, sku: "02547", img: "", inStock: true },
+                { id: 10024, name: "Термостат ВОЛГА КАМАЗ ГАЗЕЛЬ 82град.", price: 0, sku: "03286", img: "", inStock: true },
+                { id: 10025, name: "Термостат ВОЛГА КАМАЗ ГАЗЕЛЬ 87град.", price: 0, sku: "06569", img: "", inStock: true },
+                { id: 10026, name: "Термостат КАМАЗ ГАЗЕЛЬ ВОЛГА 3110 (70 град.)", price: 0, sku: "04549", img: "", inStock: true },
+                { id: 10027, name: "Термостатат ГАЗ-53 УАЗ ГАЗ 3307 ПАЗ", price: 0, sku: "04417", img: "", inStock: true },
+                { id: 10028, name: "Топливный насос ВАЗ 2101-07 ''ДК'' плунжерный", price: 0, sku: "05590", img: "", inStock: true },
+                { id: 10029, name: "Топливный насос ВАЗ-2108, 09", price: 0, sku: "02650", img: "", inStock: true },
+                { id: 10030, name: "Топливный насос ВОЛГА ГАЕЛЬ 402 дв", price: 0, sku: "05940", img: "", inStock: true },
+                { id: 10031, name: "Топливный насос СОБОЛЬ ГАЗЕЛЬ ВОЛГА, УАЗ ЗМЗ-406 PEKAR", price: 0, sku: "02680", img: "", inStock: true },
+                { id: 10032, name: "Топливный насос УАЗ пр-во", price: 0, sku: "02681", img: "", inStock: true },
+                { id: 10033, name: "Топливный насос ГАЗ-53 ''DK''", price: 0, sku: "00305", img: "", inStock: true },
+                { id: 10034, name: "Топливный насос ЗИЛ", price: 0, sku: "02686", img: "", inStock: true }
             ],
             "Гальмівна система": [
                 { id: 4, name: "Диск гальмівний передній Газель", price: 950, sku: "3302-3501077", img: "", inStock: true },
                 { id: 201, name: "Колодки гальмівні передні Газель ТІІР", price: 480, sku: "3302-3501090", img: "", inStock: true },
                 { id: 202, name: "Циліндр гальмівний головний з бачком ГАЗ-3302", price: 1350, sku: "3302-3505010", img: "", inStock: true },
                 { id: 203, name: "Ваккумний підсилювач гальм ГАЗель Бізнес Bosch", price: 3900, sku: "0204702834", img: "", inStock: true },
-                { id: 204, name: "Шланг гальмівний передній ГАЗ-3302 довгий", price: 240, sku: "3302-3506025", img: "", inStock: true }
+                { id: 204, name: "Шланг гальмівний передній ГАЗ-3302 довгий", price: 240, sku: "3302-3506025", img: "", inStock: true },
+                { id: 20001, name: "Главный тормозной цилиндр ВАЗ 2101-07", price: 0, sku: "02677", img: "", inStock: true },
+                { id: 20002, name: "Главный тормозной цилиндр ВАЗ 2108-09", price: 0, sku: "05461", img: "", inStock: true },
+                { id: 20003, name: "Главный тормозной цилиндр ВОЛГА-2401 ГАЗ-53", price: 0, sku: "03380", img: "", inStock: true },
+                { id: 20004, name: "Главный тормозной цилиндр ГАЗЕЛЬ ВОЛГА-2410", price: 0, sku: "03645", img: "", inStock: true },
+                { id: 20005, name: "Главный тормозной цилиндр УАЗ 2 бачёк н/о", price: 0, sku: "02520", img: "", inStock: true },
+                { id: 20006, name: "Главный тормозной цилиндр УАЗ с/о", price: 0, sku: "02521", img: "", inStock: true },
+                { id: 20007, name: "Главный тормозной цилиндр УАЗ-3160 1 бачёк н/о", price: 0, sku: "02519", img: "", inStock: true },
+                { id: 20008, name: "Главный тормозной ГАЗ - 53 нов, обр", price: 0, sku: "04112", img: "", inStock: true },
+                { id: 20009, name: "Колодки тормозные задние ВАЗ 2101 - 07", price: 0, sku: "05237", img: "", inStock: true },
+                { id: 20010, name: "Колодки тормозные задние ВАЗ-2108, 09 ,10,12", price: 0, sku: "05112", img: "", inStock: true },
+                { id: 20011, name: "Колодки тормозные передние ВАЗ 2101-07", price: 0, sku: "02663", img: "", inStock: true },
+                { id: 20012, name: "Колодки тормозные передние ВАЗ-2108-099,2110, 2112, 2115", price: 0, sku: "02661", img: "", inStock: true },
+                { id: 20013, name: "Колодки тормозные передние НИВА ВАЗ2121 - 2123 DAFMI", price: 0, sku: "02660", img: "", inStock: true },
+                { id: 20014, name: "Колодка тормозная задняя ВОЛГА", price: 0, sku: "05956", img: "", inStock: true },
+                { id: 20015, name: "Колодка тормозная задняя ГАЗЕЛЬ к/т 4шт", price: 0, sku: "04101", img: "", inStock: true },
+                { id: 20016, name: "Колодка тормозная задняя ГАЗЕЛЬ по штучно", price: 0, sku: "02632", img: "", inStock: true },
+                { id: 20017, name: "Колодка тормозная передняя ВОЛГА 3110, ГАЗЕЛЬ DAFMI", price: 0, sku: "03730", img: "", inStock: true },
+                { id: 20018, name: "Колодка тормозная передняя УАЗ ПАТИОТ.ХАНТЕР.ГАЗЕЛЬ", price: 0, sku: "01661", img: "", inStock: true },
+                { id: 20019, name: "Рабочий тормозной цилиндр задний ВОЛГА-2401, ГАЗЕЛЬ", price: 0, sku: "02553", img: "", inStock: true },
+                { id: 20020, name: "Рабочий тормозной цилиндр задний ВОЛГА-2410, 3110", price: 0, sku: "02554", img: "", inStock: true },
+                { id: 20021, name: "Рабочий тормозной цилиндр перёд левый ВОЛГА-2401, 2410", price: 0, sku: "02551", img: "", inStock: true },
+                { id: 20022, name: "Рабочий тормозной цилиндр перёд правый ВОЛГА-2401, 2410", price: 0, sku: "02550", img: "", inStock: true },
+                { id: 20023, name: "Рабочий тормозной ц-р самоповодной ВАЗ 2105-08-10-12-2121", price: 0, sku: "04506", img: "", inStock: true },
+                { id: 20024, name: "Рабочий тормозной цилиндр ВАЗ 2101-07-2121 '' Cifam ''", price: 0, sku: "04493", img: "", inStock: true },
+                { id: 20025, name: "Рабочий тормозной цилиндр задний ГАЗ-53", price: 0, sku: "02565", img: "", inStock: true },
+                { id: 20026, name: "Рабочий тормозной цилиндр передний ГАЗ-53", price: 0, sku: "02566", img: "", inStock: true }
             ],
             "Підвіска та кермо": [
                 { id: 6, name: "Ресора задня Газель 3-х листова", price: 3100, sku: "3302-2912012", img: "", inStock: true },
                 { id: 301, name: "Ресора передня Газель 2-х листова підсилена", price: 2450, sku: "3302-2902011", img: "", inStock: true },
                 { id: 302, name: "Амортизатор передній/задній ГАЗель Бізнес Sachs", price: 1150, sku: "451310001", img: "", inStock: true },
                 { id: 303, name: "Шкворень ГАЗ-3302 комплект на 2 сторони (на підшипниках)", price: 850, sku: "3302-3000100", img: "", inStock: true },
-                { id: 304, name: "Наконечник рульової тяги ГАЗель правий/лівий комплект", price: 790, sku: "3302-3414010", img: "", inStock: true }
+                { id: 304, name: "Наконечник рульової тяги ГАЗель правий/лівий комплект", price: 790, sku: "3302-3414010", img: "", inStock: true },
+                { id: 30001, name: "Аммортизатор передний ВОЛГА б/у", price: 0, sku: "03297", img: "", inStock: true },
+                { id: 30002, name: "Шаровая оппора ВАЗ-2108, 09 -10 -12-15", price: 0, sku: "03049", img: "", inStock: true },
+                { id: 30003, name: "Шаровая оппора верхняя ВАЗ 2101-07 '' пр-во АМТ ''", price: 0, sku: "03050", img: "", inStock: true },
+                { id: 30004, name: "Шаровая оппора нижняя ВАЗ 2101 - 07", price: 0, sku: "05779", img: "", inStock: true },
+                { id: 30005, name: "Шарова опора ГАЗ2217 СОБОЛЬ нижняя", price: 0, sku: "05557", img: "", inStock: true },
+                { id: 30006, name: "Шаровая опора ГАЗ-2217. СОБОЛЬ верхняя", price: 0, sku: "05152", img: "", inStock: true },
+                { id: 30007, name: "Шкворня ГАЗЕЛЬ поворотного кулака стандарт", price: 0, sku: "02558", img: "", inStock: true },
+                { id: 30008, name: "Шкворня повор/кулака УАЗ (на подшипниках)", price: 0, sku: "02157", img: "", inStock: true },
+                { id: 30009, name: "Шкворня повор/кулака УАЗ на шариках пр-во Ульяновск", price: 0, sku: "02548", img: "", inStock: true },
+                { id: 30010, name: "Шкворня поворотного кулака ВОЛГА", price: 0, sku: "02139", img: "", inStock: true },
+                { id: 30011, name: "Шкворня поворотного кулака ГАЗ-53 завод", price: 0, sku: "04114", img: "", inStock: true },
+                { id: 30012, name: "Шкворень КАМАЗ", price: 0, sku: "01989", img: "", inStock: true },
+                { id: 30013, name: "Шкворень КАМАЗ Р1", price: 0, sku: "04469", img: "", inStock: true },
+                { id: 30014, name: "Шкворень КАМАЗ Р2", price: 0, sku: "05136", img: "", inStock: true },
+                { id: 30015, name: "Наконечник рулевой ВАЗ 1118(КАЛИНА)пр-во КЕДР", price: 0, sku: "02720", img: "", inStock: true },
+                { id: 30016, name: "Наконечник рулевой тяги ВАЗ-2110", price: 0, sku: "03383", img: "", inStock: true },
+                { id: 30017, name: "Наконечник рулевой тяги длинный ВАЗ 2101-07 ZOLLEX", price: 0, sku: "05698", img: "", inStock: true },
+                { id: 30018, name: "Наконечник рулевой тяги длинный ВАЗ 2101-07 ТРЕК", price: 0, sku: "03385", img: "", inStock: true },
+                { id: 30019, name: "Наконечник рулевой тяги короткий ВАЗ 2101-07 (FENOX)", price: 0, sku: "03386", img: "", inStock: true },
+                { id: 30020, name: "Наконечник рулевой тяги короткий ВАЗ 2101-07 ZOLLEX", price: 0, sku: "05639", img: "", inStock: true },
+                { id: 30021, name: "Наконечники рулевых тяг ВАЗ-2108, 09 ТРЕК", price: 0, sku: "03047", img: "", inStock: true },
+                { id: 30022, name: "Наконечник рулевой тяги ГАЗЕЛЬ левый", price: 0, sku: "05532", img: "", inStock: true },
+                { id: 30023, name: "Наконечник рулевой тяги ГАЗЕЛЬ правий", price: 0, sku: "03333", img: "", inStock: true },
+                { id: 30024, name: "Наконечник рулевой УАЗ левый", price: 0, sku: "02549", img: "", inStock: true },
+                { id: 30025, name: "Наконечник рулевой УАЗ правый", price: 0, sku: "02294", img: "", inStock: true }
             ],
             "Електрика та світло": [
                 { id: 7, name: "Стартер Газель (дв. 405)", price: 3400, sku: "922.3708", img: "", inStock: true },
                 { id: 402, name: "Стартер Газель NEXT дв. Cummins 2.8", price: 5200, sku: "5266969", img: "", inStock: true },
                 { id: 403, name: "Генератор ГАЗель Бізнес двигун УМЗ-4216 120А", price: 4200, sku: "3212.3771", img: "", inStock: true },
                 { id: 404, name: "Фара передня ліва ГАЗель Бізнес (ГАЗ оригінал)", price: 3100, sku: "3302-3711011", img: "", inStock: true },
-                { id: 405, name: "Котушка запалювання ГАЗ-3302 двигун 405/406", price: 650, sku: "406.3705000", img: "", inStock: true }
+                { id: 405, name: "Котушка запалювання ГАЗ-3302 двигун 405/406", price: 650, sku: "406.3705000", img: "", inStock: true },
+                { id: 40001, name: "Бендикс ВАЗ 2101-07", price: 0, sku: "02731", img: "", inStock: true },
+                { id: 40002, name: "Бендикс ВАЗ-2108, 09 № 264", price: 0, sku: "02734", img: "", inStock: true },
+                { id: 40003, name: "Бендикс ВАЗ-2110, 11, 12, 15 № 507", price: 0, sku: "02728", img: "", inStock: true },
+                { id: 40004, name: "Бендикс ВОЛГА № 60,600 ВОЛГА УАЗ ГАЗ-53 ПАЗ", price: 0, sku: "02736", img: "", inStock: true },
+                { id: 40005, name: "Бендикс ВОЛГА, МОСКВИЧ-2140, 2141 № 503 малый", price: 0, sku: "02735", img: "", inStock: true },
+                { id: 40006, name: "Бендикс ВОЛГА-3110. 31029. ГАЗЕЛЬ (504, 600)", price: 0, sku: "02737", img: "", inStock: true },
+                { id: 40007, name: "Бендикс ЗИЛ ''<БИЧОК> МТЗ 24В", price: 0, sku: "03058", img: "", inStock: true },
+                { id: 40008, name: "Бендикс ЗИЛ, ЛИАЗ № 601", price: 0, sku: "02738", img: "", inStock: true },
+                { id: 40009, name: "Бендикс КАМАЗ пр-во Россия", price: 0, sku: "02701", img: "", inStock: true },
+                { id: 40010, name: "Генератор КАМАЗ МАЗ КРАЗ ЯМЗ 28В 50А", price: 0, sku: "03454", img: "", inStock: true },
+                { id: 40011, name: "Генератор КАМАЗ пр-во БАТЭ Белорусь", price: 0, sku: "05438", img: "", inStock: true },
+                { id: 40012, name: "Генератор КАМАЗ ЭВРО завод 80 А нов/обр.", price: 0, sku: "02672", img: "", inStock: true },
+                { id: 40013, name: "Стартер КАМАЗ", price: 0, sku: "01547", img: "", inStock: true }
             ],
             "Масла та автохімія": [
                 { id: 501, name: "Масло моторне Shell Rimula R4 X 15W-40 5л", price: 1450, sku: "RIMULA5L", img: "", inStock: true },
                 { id: 502, name: "Антифриз Felix Carbox Червоний G12+ 5кг", price: 580, sku: "FELIXG125K", img: "", inStock: true },
-                { id: 503, name: "Масло трансмісійне ТАД-17і (ТМ-5-18) 4л Олрайт", price: 490, sku: "TAD174L", img: "", inStock: true }
+                { id: 503, name: "Масло трансмісійне ТАД-17і (ТМ-5-18) 4л Олрайт", price: 490, sku: "TAD174L", img: "", inStock: true },
+                { id: 50001, name: "Клей для зеркала заднего вида", price: 0, sku: "01174", img: "", inStock: true },
+                { id: 50002, name: "Клей для метала '' Epoxy-Metal ''", price: 0, sku: "00804", img: "", inStock: true },
+                { id: 50003, name: "Клей для МЕТАЛА шприц 30г. '' AXXIS '' двухкомпонентный", price: 0, sku: "04557", img: "", inStock: true },
+                { id: 50004, name: "Клей для пластика '' Epoxy-Plastic ''", price: 0, sku: "05275", img: "", inStock: true },
+                { id: 50005, name: "Клей универсальный '' AXXIS ''.ZOLLEX'' K-2 ''", price: 0, sku: "03410", img: "", inStock: true },
+                { id: 50006, name: "Канистра пищевая с краником (РУКОМОЙКА)", price: 0, sku: "00279", img: "", inStock: true }
             ],
             "Акумулятори": [
                 { id: 601, name: "Акумулятор ISTA 6CT-75 Amps", price: 2950, sku: "ISTA75", img: "", inStock: true },
-                { id: 602, name: "Акумулятор Forse 6CT-100 Аг для вантажівок", price: 4100, sku: "FORSE100", img: "", inStock: true }
+                { id: 602, name: "Акумулятор Forse 6CT-100 Аг для вантажівок", price: 4100, sku: "FORSE100", img: "", inStock: true },
+                { id: 60001, name: "БАТАРЕЙКА АККУМУЛЯТОРНАЯ RCR123A 3V 1000Ah зарядка Tyre-C", price: 0, sku: "06503", img: "", inStock: true },
+                { id: 60002, name: "Батарейки AАА зарядка Type-C АКАМУЛЯТОР 1,5V со шнуром", price: 0, sku: "06573", img: "", inStock: true }
             ],
             "Щітки (Дворники)": [
-                { id: 701, name: "Щітки склоочисника Газель Bosch Eco", price: 380, sku: "3397004584", img: "", inStock: true }
+                { id: 701, name: "Щітки склоочисника Газель Bosch Eco", price: 380, sku: "3397004584", img: "", inStock: true },
+                { id: 70001, name: "Резинка щеток стеклоочистителя 700мм VOIN", price: 0, sku: "02786", img: "", inStock: true },
+                { id: 70002, name: "Резинки щеток стеклоочестителя 500мм. VOIN", price: 0, sku: "05499", img: "", inStock: true },
+                { id: 70003, name: "Щетка стеклоочестителя 330 мм ВАЗ 2101-07 и 2108 зад стекло безхребетная", price: 0, sku: "02814", img: "", inStock: true },
+                { id: 70004, name: "Щетка стеклоочестителя 330мм ВАЗ 2101 - 07 ''VOIN''", price: 0, sku: "03156", img: "", inStock: true },
+                { id: 70005, name: "Щетка стеклоочестителя 450 мм '' PREMIUM '' безкаркасная", price: 0, sku: "03155", img: "", inStock: true },
+                { id: 70006, name: "Щетка стеклоочестителя 480 мл.'' VOIN ''", price: 0, sku: "03152", img: "", inStock: true },
+                { id: 70007, name: "Щетка стеклоочестителя 560мм ''VOIN ''", price: 0, sku: "03150", img: "", inStock: true },
+                { id: 70008, name: "Щетка стеклоочестителя 600мм '' VOIN ''", price: 0, sku: "05179", img: "", inStock: true },
+                { id: 70009, name: "Щетка стеклоочестителя 600мм ГРУЗОВАЯ шырокое крепление", price: 0, sku: "01836", img: "", inStock: true },
+                { id: 70010, name: "Щетка стеклоочестителя 650мм ГРУЗОВОЙ шырокое крепление", price: 0, sku: "06568", img: "", inStock: true },
+                { id: 70011, name: "Щетка стеклоочестителя 700мм ГРУЗОВОЙ широкое крепление", price: 0, sku: "06310", img: "", inStock: true }
             ],
             "ТО та фільтри": [
                 { id: 804, name: "Фільтр масляний Cummins 2.8 Fleetguard", price: 850, sku: "LF16352", img: "", inStock: true },
                 { id: 805, name: "Фільтр паливний сепаратор Cummins Next ГАЗель", price: 920, sku: "FS19925", img: "", inStock: true },
-                { id: 806, name: "Фільтр повітряний ГАЗель Next/Бізнес бочка", price: 450, sku: "3302-1109010", img: "", inStock: true }
+                { id: 806, name: "Фільтр повітряний ГАЗель Next/Бізнес бочка", price: 450, sku: "3302-1109010", img: "", inStock: true },
+                { id: 80001, name: "Фильтр масляный КАМАЗ в сборе", price: 0, sku: "04650", img: "", inStock: true },
+                { id: 80002, name: "Фильтр топливный КАМАЗ в сборе", price: 0, sku: "03422", img: "", inStock: true },
+                { id: 80003, name: "Фильтр грубой очистки топлива КАМАЗ, МАЗ", price: 0, sku: "05133", img: "", inStock: true },
+                { id: 80004, name: "Фильтр грубой очистки топлива КАМАЗ, МАЗ в зборе", price: 0, sku: "04041", img: "", inStock: true }
             ]
         };
 
         let cart = JSON.parse(localStorage.getItem('userCart')) || [];
         
-        // Додаємо тестового користувача, якщо база порожня
         let registeredUsers = JSON.parse(localStorage.getItem('siteUsersDb')) || [];
         if (registeredUsers.length === 0) {
             registeredUsers = [
@@ -990,9 +1107,7 @@
                 product.inStock = !product.inStock;
                 localStorage.setItem('globalCatalog', JSON.stringify(partsCatalog));
                 selectCategory(activeCategory);
-                if(document.getElementById("partSearchInput").value.trim() !== "") {
-                    executeSearch();
-                }
+                if(document.getElementById("partSearchInput").value.trim() !== "") executeSearch();
             }
         }
 
@@ -1098,7 +1213,7 @@
 
         function updateCartDisplay() {
             document.getElementById("cartCount").textContent = cart.length;
-            document.getElementById("cartTotal").textContent = cart.reduce((sum, item) => sum + parseInt(item.price || 0), 0);
+            document.getElementById("cartTotal").textContent = cart.reduce((sum, item) => sum + (parseInt(item.price) || 0), 0);
         }
 
         function addToCart(id, name, price, img) {
@@ -1131,7 +1246,7 @@
                 `;
                 container.appendChild(div);
             });
-            document.getElementById("cartModalTotal").textContent = cart.reduce((sum, item) => sum + parseInt(item.price || 0), 0);
+            document.getElementById("cartModalTotal").textContent = cart.reduce((sum, item) => sum + (parseInt(item.price) || 0), 0);
         }
 
         function removeFromCart(index) {
@@ -1163,7 +1278,7 @@
                 clientEmail: email || "Не вказано",
                 clientAddress: address,
                 items: [...cart],
-                total: cart.reduce((sum, item) => sum + parseInt(item.price || 0), 0),
+                total: cart.reduce((sum, item) => sum + (parseInt(item.price) || 0), 0),
                 status: "NEW"
             };
 
@@ -1277,7 +1392,7 @@
             const tbody = document.getElementById("clientsTableBody");
             tbody.innerHTML = "";
             if(registeredUsers.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='3'>Немає клієнтів</td></tr>";
+                tbody.innerHTML = "<td><td colspan='3'>Немає клієнтів</td></tr>";
             } else {
                 registeredUsers.forEach(u => {
                     let tr = document.createElement("tr");
@@ -1383,7 +1498,7 @@
                 area.innerHTML = `<div style="background:white; border:1px solid #cbd5e1; padding:15px; border-radius:6px;">
                     ${results.map(p => {
                         const stockStatusHtml = p.inStock ? '<span class="stock-status stock-in">✅ Є в наявності</span>' : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
-                        const buyButtonHtml = p.inStock ? `<button class="btn" style="padding:5px 10px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">Купити</button>` : `<button class="btn btn-disabled" style="padding:5px 10px; font-size:13px;" disabled>Немає</button>`;
+                        const buyButtonHtml = p.inStock ? `<button class="btn" style="padding:5px 10px; font-size:13px;" onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.img}')">Купити</button>` : `<button class="btn btn-disabled" style="padding:5px 10px; font-size:13px;" disabled>Немає</button>`;
                         return `<div style="margin-bottom:10px; padding:10px; background:#f8fafc; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
                             <div><strong>${p.name}</strong> (${p.sku}) — <strong style="color:var(--accent-color);">${p.price} грн</strong> ${stockStatusHtml}</div>
                             <div style="display:flex; gap:5px;">
@@ -1420,7 +1535,7 @@
                     card.className = "product-item-card";
                     
                     const stockStatusHtml = p.inStock ? '<span class="stock-status stock-in">✅ Є в наявності</span>' : '<span class="stock-status stock-out">❌ Немає в наявності</span>';
-                    const buyButtonHtml = p.inStock ? `<button class="btn" style="padding:7px 15px;" onclick="addToCart(${p.id}, '${p.name}', ${p.price}, '${p.img}')">В кошик</button>` : `<button class="btn btn-disabled" style="padding:7px 15px;" disabled>Немає в наявності</button>`;
+                    const buyButtonHtml = p.inStock ? `<button class="btn" style="padding:7px 15px;" onclick="addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.img}')">В кошик</button>` : `<button class="btn btn-disabled" style="padding:7px 15px;" disabled>Немає в наявності</button>`;
                     
                     let adminButtonsHtml = "";
                     if(isOwnerLoggedIn) {
