@@ -205,12 +205,6 @@
             background-color: #1d4ed8; 
         }
 
-        .action-buttons-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
         .filter-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
@@ -467,17 +461,6 @@
             color: #991b1b;
         }
 
-        .garage-box {
-            background: #f0fdf4; 
-            border: 1px solid #bbf7d0;
-            padding: 5px 10px; 
-            border-radius: 4px;
-            display: inline-block; 
-            margin-top: 5px; 
-            font-size: 12px; 
-            color: #166534;
-        }
-        
         .admin-badge { 
             background: #ef4444; 
             color: white; 
@@ -617,7 +600,7 @@
             <div class="search-by-number">
                 <label style="font-weight: 600; font-size: 15px;">🔍 Швидкий пошук за артикулом або назвою (ігнорує пробіли та дефіси):</label>
                 <div class="input-group">
-                    <input type="text" id="partSearchInput" placeholder="Введіть номер... (наприклад, 3302 чи Ресора)">
+                    <input type="text" id="partSearchInput" placeholder="Введіть номер... (наприклад, 02509 або Бачок)">
                     <button class="btn" type="button" onclick="executeSearch()">Пошук</button>
                 </div>
                 <div id="searchResultArea" style="margin-top:15px;"></div>
@@ -824,7 +807,6 @@
                 { id: 114, name: "Ланцюг ГРМ ГАЗ-3302 двигун 406/405 комплект", price: 1950, sku: "406.3906625", img: "", inStock: true },
                 { id: 115, name: "Помпа охолодження двигуна Cummins ISF 2.8", price: 2600, sku: "5269897", img: "", inStock: true },
                 { id: 116, name: "Датчик тиску масла ГАЗель Next Cummins", price: 680, sku: "4921477", img: "", inStock: true },
-                // ВАЗ
                 { id: 2001, name: "Бачок главного тормозного цилиндра ВАЗ 2101", price: 50, sku: "02509", img: "", inStock: true },
                 { id: 2002, name: "Бачок разширительный ВАЗ 2108 - 09 инжектор", price: 280, sku: "04658", img: "", inStock: true },
                 { id: 2003, name: "Бачок разшырительный ВАЗ 2108 - 09 с пробкой", price: 410, sku: "04593", img: "", inStock: true },
@@ -961,7 +943,6 @@
                 { id: 2134, name: "Шкив генератора ВАЗ 2101-07", price: 310, sku: "02334", img: "", inStock: true },
                 { id: 2135, name: "Шрус внешний ВАЗ-2108, 09. 2110 - 15 -16 -17", price: 980, sku: "03726", img: "", inStock: true },
                 { id: 2136, name: "Шрус внешний НИВА - ВАЗ 2121 ZOLLEX", price: 880, sku: "03339", img: "", inStock: true },
-                // ВОЛГА/ГАЗель
                 { id: 3001, name: "Аммортизатор передний ВОЛГА б/у", price: 99, sku: "03297", img: "", inStock: true },
                 { id: 3002, name: "Бачок цилиндра сцепления ВОЛГА МОСКВИЧ", price: 65, sku: "04039", img: "", inStock: true },
                 { id: 3003, name: "Башмак натяжения цепи ГАЗЕЛЬ", price: 100, sku: "02152", img: "", inStock: true },
@@ -1170,7 +1151,6 @@
                 { id: 3206, name: "Шпилька колёсная ГАЗЕЛЬ", price: 90, sku: "00430", img: "", inStock: true },
                 { id: 3207, name: "Шып замка двери безшумный нов/обр ГАЗЕЛЬ", price: 160, sku: "05674", img: "", inStock: true },
                 { id: 3208, name: "Шып замка двери ГАЗЕЛЬ", price: 120, sku: "05673", img: "", inStock: true },
-                // УАЗ
                 { id: 4001, name: "Втулка рессорная УАЗ", price: 145, sku: "04363", img: "", inStock: true },
                 { id: 4002, name: "Главный тормозной цилиндр УАЗ 2 бачёк н/о", price: 2270, sku: "02520", img: "", inStock: true },
                 { id: 4003, name: "Диск сципления ведомый УАЗ н/о дв. - 451 '' УМЗ ''", price: 1190, sku: "02575", img: "", inStock: true },
@@ -1219,7 +1199,6 @@
                 { id: 4046, name: "Шпилька головки блока УАЗ длинная ремонтная", price: 110, sku: "05458", img: "", inStock: true },
                 { id: 4047, name: "Шпилька головки блока цилиндров УАЗ длинная 041085 по-во ЗМЗ", price: 120, sku: "05944", img: "", inStock: true },
                 { id: 4048, name: "Шпилька головки блока цилиндров УАЗ по-во УМЗ", price: 110, sku: "02202", img: "", inStock: true },
-                // ГАЗ-53
                 { id: 5001, name: "Бендикс ЗИЛ ''<БИЧОК> МТЗ 24В", price: 450, sku: "03058", img: "", inStock: true },
                 { id: 5002, name: "Бендикс ЗИЛ, ЛИАЗ № 601", price: 410, sku: "02738", img: "", inStock: true },
                 { id: 5003, name: "Болт карданный 12 ГАЗ-53 КРАЗ", price: 55, sku: "00447", img: "", inStock: true },
@@ -1271,7 +1250,6 @@
                 { id: 5049, name: "Шланг ГУР ЗИЛ-130", price: 410, sku: "03803", img: "", inStock: true },
                 { id: 5050, name: "Шпилька колёсная ЗИЛ задняя левая", price: 230, sku: "00424", img: "", inStock: true },
                 { id: 5051, name: "Шпилька колёсная ЗИЛ задняя правая", price: 240, sku: "00423", img: "", inStock: true },
-                // КамАЗ
                 { id: 6001, name: "Алкаголик КАМАЗ (Кран против замерзания)", price: 930, sku: "01814", img: "", inStock: true },
                 { id: 6002, name: "Бачек разшырительний КАМАЗ", price: 1460, sku: "05512", img: "", inStock: true },
                 { id: 6003, name: "Бендикс КАМАЗ пр-во Россия", price: 1960, sku: "02701", img: "", inStock: true },
@@ -1610,7 +1588,6 @@
                 { id: 6336, name: "Электроклапан подъёмника кузова КАМАЗ", price: 860, sku: "01563", img: "", inStock: true },
                 { id: 6337, name: "Энергоакумулятор КАМАЗ МАЗ ЗИЛ", price: 2960, sku: "04099", img: "", inStock: true },
                 { id: 6338, name: "Якорь стартера КАМАЗ. МАЗ.завод БАТЕ", price: 8210, sku: "03451", img: "", inStock: true },
-                // МАЗ
                 { id: 7001, name: "Кран разопщительный КАМАЗ", price: 195, sku: "01572", img: "", inStock: true },
                 { id: 7002, name: "Мотор бачка стеклоомывателя КАМАЗ, МАЗ", price: 180, sku: "01962", img: "", inStock: true },
                 { id: 7003, name: "Мотор стеклоочистителя КАМАЗ МАЗ", price: 1580, sku: "01931", img: "", inStock: true },
@@ -1625,6 +1602,129 @@
                 { id: 7012, name: "Фильтр грубой очистки топлива КАМАЗ, МАЗ в зборе", price: 1270, sku: "04041", img: "", inStock: true },
                 { id: 7013, name: "Энергоакумулятор КАМАЗ МАЗ ЗИЛ", price: 2960, sku: "04099", img: "", inStock: true },
                 { id: 7014, name: "Якорь стартера КАМАЗ. МАЗ.завод БАТЕ", price: 8210, sku: "03451", img: "", inStock: true }
+            ],
+            "Гальмівна система": [
+                { id: 40001, name: "Колодки гальмівні задні ВАЗ 2101-07", price: 760, sku: "05237", img: "", inStock: true },
+                { id: 40002, name: "Колодки гальмівні задні ВАЗ-2108-09-10-12", price: 690, sku: "05112", img: "", inStock: true },
+                { id: 40003, name: "Колодки гальмівні передні ВАЗ 2101-07", price: 360, sku: "02663", img: "", inStock: true },
+                { id: 40004, name: "Колодки гальмівні передні ВАЗ-2108-099-2110-2112-2115", price: 440, sku: "02661", img: "", inStock: true },
+                { id: 40005, name: "Колодки гальмівні передні НИВА ВАЗ2121-2123 DAFMI", price: 430, sku: "02660", img: "", inStock: true },
+                { id: 40006, name: "Головний гальмівний циліндр ВАЗ 2101-07", price: 980, sku: "02677", img: "", inStock: true },
+                { id: 40007, name: "Головний гальмівний циліндр ВАЗ 2108-09", price: 1250, sku: "05461", img: "", inStock: true },
+                { id: 40008, name: "Робочий гальмівний циліндр ВАЗ 2101-07-2121 Cifam", price: 340, sku: "04493", img: "", inStock: true },
+                { id: 40009, name: "Робочий гальмівний циліндр ВАЗ 2105-08-10-12-2121 самоповодной", price: 460, sku: "04506", img: "", inStock: true },
+                { id: 40010, name: "Головний гальмівний циліндр ГАЗЕЛЬ ВОЛГА-2410", price: 1620, sku: "03645", img: "", inStock: true },
+                { id: 40011, name: "Колодки гальмівні задні ГАЗЕЛЬ к/т 4шт", price: 1100, sku: "04101", img: "", inStock: true },
+                { id: 40012, name: "Колодки гальмівні задні ГАЗЕЛЬ по штучно", price: 290, sku: "02632", img: "", inStock: true },
+                { id: 40013, name: "Колодки гальмівні передні ВОЛГА 3110 ГАЗЕЛЬ DAFMI", price: 560, sku: "03730", img: "", inStock: true },
+                { id: 40014, name: "Головний гальмівний циліндр УАЗ 2 бачёк н/о", price: 2270, sku: "02520", img: "", inStock: true },
+                { id: 40015, name: "Колодки гальмівні передні УАЗ ПАТИОТ-ХАНТЕР-ГАЗЕЛЬ", price: 580, sku: "01661", img: "", inStock: true },
+                { id: 40016, name: "Головний гальмівний циліндр ГАЗ-53 нов-обр", price: 4460, sku: "04112", img: "", inStock: true },
+                { id: 40017, name: "Робочий гальмівний циліндр задній ГАЗ-53", price: 760, sku: "02565", img: "", inStock: true },
+                { id: 40018, name: "Робочий гальмівний циліндр передній ГАЗ-53", price: 640, sku: "02566", img: "", inStock: true },
+                { id: 40019, name: "Робочий гальмівний циліндр задній ВОЛГА-2401 ГАЗЕЛЬ", price: 680, sku: "02553", img: "", inStock: true },
+                { id: 40020, name: "Робочий гальмівний циліндр задній ВОЛГА-2410-3110", price: 680, sku: "02554", img: "", inStock: true },
+                { id: 40021, name: "Робочий гальмівний циліндр передній лівий ВОЛГА-2401-2410", price: 520, sku: "02551", img: "", inStock: true },
+                { id: 40022, name: "Робочий гальмівний циліндр передній правий ВОЛГА-2401-2410", price: 520, sku: "02550", img: "", inStock: true },
+                { id: 40023, name: "Головний гальмівний циліндр УАЗ 1 бачёк н/о", price: 2760, sku: "02519", img: "", inStock: true },
+                { id: 40024, name: "Колодки гальмівні задні ВОЛГА по штучно", price: 230, sku: "02634", img: "", inStock: true },
+                { id: 40025, name: "Камера гальмівна КАМАЗ передня проста", price: 1190, sku: "03442", img: "", inStock: true },
+                { id: 40026, name: "ПГУ КАМАЗ", price: 3960, sku: "01540", img: "", inStock: true },
+                { id: 40027, name: "Кран гальмівний ГТК КАМАЗ", price: 2820, sku: "01823", img: "", inStock: true },
+                { id: 40028, name: "Кран ручного гальма КАМАЗ", price: 1140, sku: "03429", img: "", inStock: true },
+                { id: 40029, name: "РДВ КАМАЗ DK", price: 1670, sku: "01833", img: "", inStock: true },
+                { id: 40030, name: "Енергоакумулятор КАМАЗ МАЗ ЗІЛ", price: 2960, sku: "04099", img: "", inStock: true }
+            ],
+            "Підвіска та кермо": [
+                { id: 50001, name: "Наконечник рульової тяги ВАЗ-2110", price: 1450, sku: "03383", img: "", inStock: true },
+                { id: 50002, name: "Наконечник рульової тяги довгий ВАЗ 2101-07 ZOLLEX", price: 810, sku: "05698", img: "", inStock: true },
+                { id: 50003, name: "Наконечник рульової тяги довгий ВАЗ 2101-07 ТРЕК", price: 1200, sku: "03385", img: "", inStock: true },
+                { id: 50004, name: "Наконечник рульової тяги короткий ВАЗ 2101-07 FENOX", price: 420, sku: "03386", img: "", inStock: true },
+                { id: 50005, name: "Наконечник рульової тяги короткий ВАЗ 2101-07 ZOLLEX", price: 690, sku: "05639", img: "", inStock: true },
+                { id: 50006, name: "Наконечники рульових тяг ВАЗ-2108-09 ТРЕК", price: 1310, sku: "03047", img: "", inStock: true },
+                { id: 50007, name: "Рульова трапеція ВАЗ 2101-07", price: 2200, sku: "03384", img: "", inStock: true },
+                { id: 50008, name: "Кульова опора ВАЗ-2108-09-10-12-15", price: 470, sku: "03049", img: "", inStock: true },
+                { id: 50009, name: "Кульова опора верхня ВАЗ 2101-07 АМТ", price: 390, sku: "03050", img: "", inStock: true },
+                { id: 50010, name: "Кульова опора нижня ВАЗ 2101-07", price: 580, sku: "05779", img: "", inStock: true },
+                { id: 50011, name: "Сайлентблок передньої підвіски ВАЗ 2108-09", price: 60, sku: "02297", img: "", inStock: true },
+                { id: 50012, name: "Сайлентблок НИВА ТРЕК", price: 1290, sku: "03046", img: "", inStock: true },
+                { id: 50013, name: "Наконечник рульової тяги ГАЗЕЛЬ лівий", price: 480, sku: "05532", img: "", inStock: true },
+                { id: 50014, name: "Наконечник рульової тяги ГАЗЕЛЬ правий", price: 480, sku: "03333", img: "", inStock: true },
+                { id: 50015, name: "Наконечник рульової тяги УАЗ лівий", price: 460, sku: "02549", img: "", inStock: true },
+                { id: 50016, name: "Наконечник рульової тяги УАЗ правий", price: 460, sku: "02294", img: "", inStock: true },
+                { id: 50017, name: "Кульова опора ГАЗ-2217 СОБОЛЬ нижня", price: 850, sku: "05557", img: "", inStock: true },
+                { id: 50018, name: "Кульова опора ГАЗ-2217 СОБОЛЬ верхня", price: 740, sku: "05152", img: "", inStock: true },
+                { id: 50019, name: "Шкворень ГАЗЕЛЬ поворотного кулака стандарт", price: 1860, sku: "02558", img: "", inStock: true },
+                { id: 50020, name: "Рульовий палець ГАЗЕЛЬ ТРЕК", price: 460, sku: "04532", img: "", inStock: true },
+                { id: 50021, name: "Шкворень поворотного кулака ГАЗ-53 завод", price: 2310, sku: "04114", img: "", inStock: true },
+                { id: 50022, name: "Шкворень КАМАЗ", price: 980, sku: "01989", img: "", inStock: true },
+                { id: 50023, name: "Шкворень повор/кулака УАЗ (на підшипниках)", price: 660, sku: "02157", img: "", inStock: true },
+                { id: 50024, name: "Шкворень повор/кулака УАЗ на кульках пр-во Ульяновськ", price: 920, sku: "02548", img: "", inStock: true }
+            ],
+            "Електрика та світло": [
+                { id: 60001, name: "Лампочка H-4 12v60/55 P43 halogen", price: 35, sku: "00850", img: "", inStock: true },
+                { id: 60002, name: "Лампочка 12v21 стопа", price: 15, sku: "03231", img: "", inStock: true },
+                { id: 60003, name: "Лампочка 12v21/5 двухконтактна", price: 15, sku: "04654", img: "", inStock: true },
+                { id: 60004, name: "Лампочка 12v21 стопа поворота (жовті)", price: 25, sku: "05049", img: "", inStock: true },
+                { id: 60005, name: "Лампочка 24v75/70 P43", price: 90, sku: "06446", img: "", inStock: true },
+                { id: 60006, name: "Лампочка габарита 24V-5w BOSCH", price: 25, sku: "06519", img: "", inStock: true },
+                { id: 60007, name: "Лампочка стопа 24v21w", price: 20, sku: "03251", img: "", inStock: true },
+                { id: 60008, name: "Світлодіод 12В габарита білий в цоколі", price: 35, sku: "04737", img: "", inStock: true },
+                { id: 60009, name: "Світлодіод 12В освітлення салону 11х36", price: 45, sku: "06088", img: "", inStock: true },
+                { id: 60010, name: "Світлодіод 24В освітлення салону 11х36мм білий", price: 45, sku: "06947", img: "", inStock: true },
+                { id: 60011, name: "Фара задня ГАЗЕЛЬ (КРИСТАЛ)", price: 720, sku: "04022", img: "", inStock: true },
+                { id: 60012, name: "Фара задня КАМАЗ МАЗ ЗІЛ ліва Д/К", price: 380, sku: "01200", img: "", inStock: true },
+                { id: 60013, name: "Фара задня КАМАЗ МАЗ ЗІЛ права Д/К", price: 390, sku: "03238", img: "", inStock: true },
+                { id: 60014, name: "Фара задня МАЗ ЄВРО КАМАЗ УРАЛ н/обр RENO SCANIA", price: 890, sku: "05283", img: "", inStock: true },
+                { id: 60015, name: "Фара задня БОГДАН I-VAN Ataman 24V червоний", price: 270, sku: "03764", img: "", inStock: true },
+                { id: 60016, name: "Габарит бічний діодний білий (нотка) 6 діодів", price: 115, sku: "04514", img: "", inStock: true },
+                { id: 60017, name: "Габарит бічний діодний жовтий (нотка) 6 діодів", price: 115, sku: "04934", img: "", inStock: true },
+                { id: 60018, name: "Габарит бічний діодний червоний (нотка) 6 діодів", price: 115, sku: "03020", img: "", inStock: true },
+                { id: 60019, name: "Габарит діодний 24V БІЛИЙ з підсвіткою борту", price: 190, sku: "03600", img: "", inStock: true },
+                { id: 60020, name: "Габарит діодний 24V ЖОВТИЙ з підсвіткою борту", price: 190, sku: "05661", img: "", inStock: true },
+                { id: 60021, name: "Габарит діодний 24V ЧЕРВОНИЙ з підсвіткою борту", price: 190, sku: "06026", img: "", inStock: true },
+                { id: 60022, name: "Габарит (роги) LED триколірні малі", price: 810, sku: "05378", img: "", inStock: true },
+                { id: 60023, name: "Габарит (роги) великі", price: 620, sku: "04544", img: "", inStock: true },
+                { id: 60024, name: "Проводи прикуривача 500А 4м", price: 820, sku: "01108", img: "", inStock: true },
+                { id: 60025, name: "Проводи прикуривача 600А 3,5м", price: 1100, sku: "06330", img: "", inStock: true },
+                { id: 60026, name: "Проводи прикуривача 800А 3,5м", price: 1360, sku: "04794", img: "", inStock: true }
+            ],
+            "Масла та автохімія": [],
+            "Акумулятори": [],
+            "Щітки (Дворники)": [
+                { id: 70001, name: "Щітка склоочисника 330 мм ВАЗ 2101-07 VOIN", price: 130, sku: "03156", img: "", inStock: true },
+                { id: 70002, name: "Щітка склоочисника 380 мм VOIN", price: 130, sku: "05702", img: "", inStock: true },
+                { id: 70003, name: "Щітка склоочисника 430 мм ALCA (КАМАЗ)", price: 110, sku: "04888", img: "", inStock: true },
+                { id: 70004, name: "Щітка склоочисника 450 мм VOIN", price: 130, sku: "05188", img: "", inStock: true },
+                { id: 70005, name: "Щітка склоочисника 480 мм VOIN", price: 135, sku: "03152", img: "", inStock: true },
+                { id: 70006, name: "Щітка склоочисника 500 мм VOIN", price: 145, sku: "05167", img: "", inStock: true },
+                { id: 70007, name: "Щітка склоочисника 530 мм VOIN", price: 150, sku: "02765", img: "", inStock: true },
+                { id: 70008, name: "Щітка склоочисника 560 мм ALCA безкаркасна", price: 280, sku: "05244", img: "", inStock: true },
+                { id: 70009, name: "Щітка склоочисника 560 мм VOIN", price: 180, sku: "03150", img: "", inStock: true },
+                { id: 70010, name: "Щітка склоочисника 600 мм VOIN", price: 210, sku: "05179", img: "", inStock: true },
+                { id: 70011, name: "Щітка склоочисника 600 мм вантажна широке кріплення", price: 310, sku: "01836", img: "", inStock: true },
+                { id: 70012, name: "Щітка склоочисника 650 мм ALCA безхребетна", price: 340, sku: "05644", img: "", inStock: true },
+                { id: 70013, name: "Щітка склоочисника 650 мм вантажна широке кріплення", price: 360, sku: "06568", img: "", inStock: true },
+                { id: 70014, name: "Щітка склоочисника 700 мм вантажна широке кріплення", price: 370, sku: "06310", img: "", inStock: true },
+                { id: 70015, name: "Щітка склоочисника SCT GERMANY 475 мм зі спойлером", price: 135, sku: "04150", img: "", inStock: true },
+                { id: 70016, name: "Щітка склоочисника SCT GERMANY 480 мм зі спойлером", price: 138, sku: "03738", img: "", inStock: true },
+                { id: 70017, name: "Щітка склоочисника SCT GERMANY 510 мм зі спойлером", price: 143, sku: "02951", img: "", inStock: true },
+                { id: 70018, name: "Щітка склоочисника SCT GERMANY 530 мм зі спойлером", price: 148, sku: "04435", img: "", inStock: true },
+                { id: 70019, name: "Щітка склоочисника SCT GERMANY 550 мм зі спойлером", price: 155, sku: "03270", img: "", inStock: true },
+                { id: 70020, name: "Щітка склоочисника SCT GERMANY 700 мм безхребетна", price: 237, sku: "05687", img: "", inStock: true }
+            ],
+            "ТО та фільтри": [
+                { id: 80001, name: "Фільтр масляний КАМАЗ в зборі", price: 1650, sku: "04650", img: "", inStock: true },
+                { id: 80002, name: "Фільтр паливний КАМАЗ в зборі", price: 1360, sku: "03422", img: "", inStock: true },
+                { id: 80003, name: "Фільтр грубої очистки палива КАМАЗ МАЗ", price: 255, sku: "05133", img: "", inStock: true },
+                { id: 80004, name: "Фільтр грубої очистки палива КАМАЗ МАЗ в зборі", price: 1270, sku: "04041", img: "", inStock: true },
+                { id: 80005, name: "Термостат ВАЗ 2101-07 ДК", price: 390, sku: "00315", img: "", inStock: true },
+                { id: 80006, name: "Термостат ВАЗ 2108-09 ДК", price: 390, sku: "04876", img: "", inStock: true },
+                { id: 80007, name: "Термостат ВАЗ 2110-15 в зборі інж. двиг.", price: 440, sku: "05977", img: "", inStock: true },
+                { id: 80008, name: "Термостат ВОЛГА КАМАЗ ГАЗЕЛЬ 80 град.", price: 340, sku: "02547", img: "", inStock: true },
+                { id: 80009, name: "Термостат ВОЛГА КАМАЗ ГАЗЕЛЬ 82град.", price: 360, sku: "03286", img: "", inStock: true },
+                { id: 80010, name: "Термостат КАМАЗ ГАЗЕЛЬ ВОЛГА 3110 (70 град.)", price: 330, sku: "04549", img: "", inStock: true },
+                { id: 80011, name: "Термостат УАЗ (70 град.)", price: 320, sku: "05025", img: "", inStock: true }
             ]
         };
 
@@ -1841,7 +1941,7 @@
             const tbody = document.getElementById("clientsTableBody");
             tbody.innerHTML = "";
             if(registeredUsers.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='3'>Немає клієнтів</td></tr>";
+                tbody.innerHTML = "<td><td colspan='3'>Немає клієнтів</td></tr>";
             } else {
                 registeredUsers.forEach(u => {
                     let tr = document.createElement("tr");
@@ -1939,11 +2039,13 @@
             if(clean === "") { area.innerHTML = ""; return; }
             let results = [];
             for (let cat in partsCatalog) {
-                partsCatalog[cat].forEach(p => {
-                    if (p.sku.replace(/[\s\-]/g, '').toLowerCase().includes(clean) || p.name.toLowerCase().includes(clean)) {
-                        results.push({ ...p, currentCategory: cat });
-                    }
-                });
+                if (partsCatalog[cat] && Array.isArray(partsCatalog[cat])) {
+                    partsCatalog[cat].forEach(p => {
+                        if (p.sku.replace(/[\s\-]/g, '').toLowerCase().includes(clean) || p.name.toLowerCase().includes(clean)) {
+                            results.push({ ...p, currentCategory: cat });
+                        }
+                    });
+                }
             }
             if (results.length > 0) {
                 area.innerHTML = `<div style="background:white; border:1px solid #cbd5e1; padding:15px; border-radius:6px;">
